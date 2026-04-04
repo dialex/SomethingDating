@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="description" content="A step-by-step dating guide to help you navigate every stage with confidence." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Date Guide" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Dating Guide</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --accent: #7c3aed;
+      --accent-light: #ede9fe;
+      --accent-dark: #5b21b6;
+      --text-primary: #1c1917;
+      --text-secondary: #78716c;
+      --surface: #ffffff;
+      --bg: #fafaf9;
+      --border: #e7e5e4;
+      --danger: #dc2626;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100dvh;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 20px 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .app-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress-label span:first-child {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .progress-label strong {
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.35s ease;
+    }
+
+    /* ── Main content ── */
+    main {
+      flex: 1;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .step-badge {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      padding-top: 5px;
+    }
+
+    .instructions-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .instructions-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    .instructions-list li::before {
+      content: counter(item);
+      counter-increment: item;
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .instructions-list {
+      counter-reset: item;
+    }
+
+    /* ── Footer navigation ── */
+    footer {
+      padding: 16px 20px max(16px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 13px 20px;
+      transition: opacity 0.15s, background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    button:disabled:active {
+      transform: none;
+    }
+
+    .btn-prev {
+      flex: 1;
+      background: var(--bg);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-next {
+      flex: 2;
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-next:not(:disabled):hover {
+      background: var(--accent-dark);
+    }
+
+    .btn-reset {
+      width: 100%;
+      background: transparent;
+      color: var(--danger);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px;
+    }
+
+    /* ── Completion screen ── */
+    .completion-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .completion-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+
+    .completion-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .completion-sub {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Transitions ── */
+    .step-card, .completion-card {
+      animation: fadeSlideIn 0.25s ease both;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">Dating Guide</div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="progress-text">Step 1 of 5</span>
+        <strong id="progress-pct">0%</strong>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content"></main>
+
+  <footer>
+    <div class="nav-buttons">
+      <button class="btn-prev" id="btn-prev" onclick="navigate(-1)" disabled>Previous</button>
+      <button class="btn-next" id="btn-next" onclick="navigate(1)">Next</button>
+    </div>
+    <button class="btn-reset" id="btn-reset" onclick="reset()">Reset to beginning</button>
+  </footer>
+
+  <script>
+    const workflow = [
+      {
+        id: "mindset",
+        title: "Get in the Right Mindset",
+        instructions: [
+          "Remind yourself the goal is a genuine connection, not a performance.",
+          "Let go of outcome anxiety — curiosity beats trying to impress.",
+          "Take 5 slow, deep breaths before you leave the house.",
+          "Dress in something you already feel confident in.",
+        ],
+      },
+      {
+        id: "planning",
+        title: "Plan the Date",
+        instructions: [
+          "Choose a venue that allows easy conversation (avoid cinemas for a first date).",
+          "Have a backup option ready in case the first is closed or too loud.",
+          "Confirm the plan the day before with a brief, upbeat message.",
+          "Arrive 5–10 minutes early so you can settle in before they arrive.",
+        ],
+      },
+      {
+        id: "conversation",
+        title: "Lead the Conversation",
+        instructions: [
+          "Open with a light observation about the venue or something recent.",
+          "Ask open-ended questions and listen fully before responding.",
+          "Share stories that reveal your values, not just your resume.",
+          "Match their energy — mirror enthusiasm, don't overpower it.",
+          "Bring gentle humour; laugh at yourself before you laugh at anything else.",
+        ],
+      },
+      {
+        id: "connection",
+        title: "Build Genuine Connection",
+        instructions: [
+          "Put your phone face-down and give them your full attention.",
+          "Notice small things they mention and reference them later in the conversation.",
+          "Be honest about who you are — exaggeration always unravels eventually.",
+          "Read their body language and give space if they seem to need it.",
+        ],
+      },
+      {
+        id: "followup",
+        title: "Follow Up After the Date",
+        instructions: [
+          "Send a short, warm message within 24 hours saying you had a good time.",
+          "Reference one specific moment from the date to show you were present.",
+          "If you want to see them again, say so clearly — vague hints waste everyone's time.",
+          "If the feeling wasn't mutual, be kind and honest rather than ghosting.",
+          "Reflect briefly on what went well and what you'd do differently next time.",
+        ],
+      },
+    ];
+
+    let currentStep = 0;
+    const total = workflow.length;
+
+    function render() {
+      const main = document.getElementById("main-content");
+      const isComplete = currentStep >= total;
+
+      // Progress
+      const displayStep = Math.min(currentStep + 1, total);
+      const pct = Math.round((currentStep / total) * 100);
+      document.getElementById("progress-text").textContent =
+        isComplete ? `All ${total} steps done` : `Step ${displayStep} of ${total}`;
+      document.getElementById("progress-pct").textContent = pct + "%";
+      document.getElementById("progress-fill").style.width = pct + "%";
+
+      // Buttons
+      document.getElementById("btn-prev").disabled = currentStep === 0;
+      document.getElementById("btn-next").disabled = isComplete;
+      document.getElementById("btn-next").textContent =
+        currentStep === total - 1 ? "Finish" : "Next";
+      document.getElementById("btn-reset").style.visibility =
+        currentStep === 0 ? "hidden" : "visible";
+
+      // Content
+      if (isComplete) {
+        main.innerHTML = `
+          <div class="completion-card">
+            <div class="completion-icon">✓</div>
+            <div class="completion-title">You're ready!</div>
+            <p class="completion-sub">You've worked through every step. Go get 'em — and remember, the best version of you is the honest one.</p>
+          </div>`;
+      } else {
+        const step = workflow[currentStep];
+        const items = step.instructions
+          .map(i => `<li>${i}</li>`)
+          .join("");
+        main.innerHTML = `
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-badge">${currentStep + 1}</div>
+              <h1 class="step-title">${step.title}</h1>
+            </div>
+            <ol class="instructions-list">${items}</ol>
+          </div>`;
+      }
+    }
+
+    function navigate(dir) {
+      const next = currentStep + dir;
+      if (next < 0 || next > total) return;
+      currentStep = next;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function reset() {
+      currentStep = 0;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Register service worker
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
