@@ -591,14 +591,8 @@
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches
       || navigator.standalone === true;
 
-    function isIosSafari() {
-      const ua = navigator.userAgent;
-      return /iphone|ipad|ipod/i.test(ua) && /safari/i.test(ua)
-        && !/crios|fxios|opios|mercury/i.test(ua);
-    }
-
-    function showBanner() {
-      document.getElementById("install-banner").style.display = "flex";
+    function isIos() {
+      return /iphone|ipad|ipod/i.test(navigator.userAgent);
     }
 
     function dismissBanner(e) {
@@ -611,28 +605,28 @@
         // Android / Chrome: trigger native dialog
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(() => { deferredPrompt = null; dismissBanner(); });
-      } else if (isIosSafari()) {
-        // iOS Safari: show manual instructions
+      } else {
+        // iOS and any browser without native prompt: show manual instructions
         document.getElementById("ios-modal").classList.remove("hidden");
       }
     }
 
     function closeIosModal(e) {
-      // Close on backdrop click or button click
-      if (!e || e.target === document.getElementById("ios-modal") || !e.target.closest) {
+      if (!e || e.target === document.getElementById("ios-modal")) {
         document.getElementById("ios-modal").classList.add("hidden");
       }
     }
 
-    // Android: capture the install prompt before the browser shows it
+    // Capture Android/Chrome native prompt when available
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      if (!isStandalone) showBanner();
     });
 
-    // iOS: show banner if in Safari and not already installed
-    if (isIosSafari() && !isStandalone) showBanner();
+    // Show banner on all browsers unless already installed
+    if (!isStandalone) {
+      document.getElementById("install-banner").style.display = "flex";
+    }
 
     // Hide banner once installed
     window.addEventListener("appinstalled", dismissBanner);
