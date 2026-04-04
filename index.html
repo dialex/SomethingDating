@@ -420,20 +420,7 @@
   <div class="modal-backdrop hidden" id="ios-modal" onclick="closeIosModal(event)">
     <div class="modal">
       <div class="modal-title">Add to Home Screen</div>
-      <div class="modal-steps">
-        <div class="modal-step">
-          <div class="modal-step-icon">⬆️</div>
-          <div>Tap the <strong>Share</strong> button at the bottom of Safari</div>
-        </div>
-        <div class="modal-step">
-          <div class="modal-step-icon">➕</div>
-          <div>Scroll down and tap <strong>Add to Home Screen</strong></div>
-        </div>
-        <div class="modal-step">
-          <div class="modal-step-icon">✓</div>
-          <div>Tap <strong>Add</strong> in the top-right corner</div>
-        </div>
-      </div>
+      <div class="modal-steps" id="modal-steps"></div>
       <button class="btn-modal-close" onclick="closeIosModal()">Got it</button>
     </div>
   </div>
@@ -607,6 +594,7 @@
         deferredPrompt.userChoice.then(() => { deferredPrompt = null; dismissBanner(); });
       } else {
         // iOS and any browser without native prompt: show manual instructions
+        populateModalSteps();
         document.getElementById("ios-modal").classList.remove("hidden");
       }
     }
@@ -615,6 +603,23 @@
       if (!e || e.target === document.getElementById("ios-modal")) {
         document.getElementById("ios-modal").classList.add("hidden");
       }
+    }
+
+    function populateModalSteps() {
+      const steps = isIos()
+        ? [
+            { icon: "⬆️", text: "Tap the <strong>Share</strong> button at the bottom of Safari" },
+            { icon: "➕", text: "Scroll down and tap <strong>Add to Home Screen</strong>" },
+            { icon: "✓",  text: "Tap <strong>Add</strong> in the top-right corner" },
+          ]
+        : [
+            { icon: "⋮",  text: "Tap the <strong>menu</strong> (three dots) in Chrome's top-right corner" },
+            { icon: "➕", text: "Tap <strong>Add to Home Screen</strong>" },
+            { icon: "✓",  text: "Tap <strong>Add</strong> to confirm" },
+          ];
+      document.getElementById("modal-steps").innerHTML = steps
+        .map(s => `<div class="modal-step"><div class="modal-step-icon">${s.icon}</div><div>${s.text}</div></div>`)
+        .join("");
     }
 
     // Capture Android/Chrome native prompt when available
