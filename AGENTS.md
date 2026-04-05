@@ -34,6 +34,16 @@ This is a PWA — a single-page mobile app that guides users through a dating wo
 - Service worker path prefix: `/DatingGuide/` (GitHub Pages subpath).
 - When updating cached assets, bump `CACHE_NAME` version in `service-worker.js`.
 
+## Content style rules
+
+All step content in `workflow.js` must follow these rules:
+
+- **Titles**: sentence case (e.g. "Sort your appearance", not "Sort Your Appearance").
+- **Instructions**: start with an imperative verb. Use plain sentences ending with a period.
+- **Multiple sentences**: preferred over colons, semicolons, or em-dashes to join clauses. Split them.
+- **Parentheses**: used only for clarifications or examples (e.g. "any exercise counts (running, walking, gym)").
+- **No em-dashes** (`—`), **no colons** introducing explanations, **no semicolons**.
+
 ## Project Structure
 
 ```
@@ -41,25 +51,23 @@ This is a PWA — a single-page mobile app that guides users through a dating wo
 ├── css/
 │   └── styles.css          # All visual styles
 ├── js/
-│   ├── workflow.js         # Workflow data (steps array) — pure data, no DOM
+│   ├── workflow.js         # Section and step data — pure data, no DOM
 │   ├── install.js          # Install banner and modal logic
-│   └── app.js              # App logic: render, navigate, reset; entry point
+│   └── app.js              # App logic: render, navigate, section routing; entry point
 ├── tests/
-│   └── app.spec.js         # Playwright end-to-end tests
+│   ├── render.spec.js      # Playwright rendering tests
+│   └── navigation.spec.js  # Playwright navigation tests
 ├── playwright.config.js    # Playwright config (serves via `npx serve`)
 ├── package.json            # Dev dependencies only (Playwright)
-├── Makefile                # Dev commands (install, dev, test, audit, skills)
 ├── service-worker.js       # Offline caching (cache-first strategy)
-├── manifest.json           # PWA manifest
-└── .github/
-    └── workflows/
-        └── deploy.yml      # Auto-deploy to GitHub Pages on push to main
+├── manifest.json           # PWA manifest (also source of truth for version)
+└── .githooks/
+    └── pre-commit          # Auto-bumps patch version in manifest.json and service-worker.js
 ```
 
 ## Current State
 
-- Code is split by responsibility: data, logic, presentation, styles.
-- Workflow content (the steps) is still placeholder — to be replaced with content from `AdamSomethingGuide.pdf`.
-- Basic Playwright tests cover render and navigation behaviour.
-
-See `plan.md` for the implementation roadmap.
+- App has a home screen with four sections in a 2×2 grid: Intro, Meeting, Dating, Keeping.
+- Intro is fully implemented with content from `AdamSomethingGuide.pdf` (pages 5–16).
+- Meeting, Dating, and Keeping show a WIP placeholder.
+- Version is auto-incremented on every commit via the pre-commit hook.
