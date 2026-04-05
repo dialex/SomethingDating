@@ -68,6 +68,6 @@ All step content in `workflow.js` must follow these rules:
 ## Current State
 
 - App has a home screen with four sections in a 2×2 grid: Intro, Meeting, Dating, Keeping.
-- Intro is fully implemented with content from `AdamSomethingGuide.pdf` (pages 5–16).
-- Meeting, Dating, and Keeping show a WIP placeholder.
+- All four sections are fully implemented with content from `AdamSomethingGuide.pdf`.
+- At the end of each section, "Next phase" returns the user to the home screen.
 - Version is auto-incremented on every commit via the pre-commit hook.
