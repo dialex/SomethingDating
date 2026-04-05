@@ -4,6 +4,7 @@ import { setupInstallBanner } from "./install.js";
 let view = "home";
 let currentSectionId = null;
 let currentStep = 0;
+let ignoreHashChange = false;
 
 const elProgressWrap = () => document.querySelector(".progress-wrap");
 const elNavButtons   = () => document.querySelector(".nav-buttons");
@@ -105,12 +106,66 @@ function render() {
   }
 }
 
+// --- Hash routing ---
+
+function hashForState() {
+  if (view === "home") return "";
+  const section = sections.find(s => s.id === currentSectionId);
+  if (currentStep >= section.steps.length) return `${currentSectionId}/done`;
+  return `${currentSectionId}/${currentStep + 1}`;
+}
+
+function applyState() {
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  const h = hashForState();
+  ignoreHashChange = true;
+  location.hash = h;
+}
+
+function applyHash() {
+  const hash = location.hash.slice(1);
+  if (!hash) {
+    view = "home";
+    currentSectionId = null;
+    currentStep = 0;
+  } else {
+    const [sectionId, stepPart] = hash.split("/");
+    const section = sections.find(s => s.id === sectionId);
+    if (!section) {
+      view = "home";
+      currentSectionId = null;
+      currentStep = 0;
+    } else {
+      view = "section";
+      currentSectionId = sectionId;
+      if (stepPart === "done") {
+        currentStep = section.steps.length;
+      } else {
+        const n = parseInt(stepPart, 10);
+        currentStep = isNaN(n) ? 0 : Math.max(0, n - 1);
+      }
+    }
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+window.addEventListener("hashchange", () => {
+  if (ignoreHashChange) {
+    ignoreHashChange = false;
+    return;
+  }
+  applyHash();
+});
+
+// --- Navigation ---
+
 function enterSection(id) {
   view = "section";
   currentSectionId = id;
   currentStep = 0;
-  render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  applyState();
 }
 
 export function navigate(dir) {
@@ -123,22 +178,19 @@ export function navigate(dir) {
   const next = currentStep + dir;
   if (next < 0) return;
   currentStep = next;
-  render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  applyState();
 }
 
 export function reset() {
   currentStep = 0;
-  render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  applyState();
 }
 
 function goHome() {
   view = "home";
   currentSectionId = null;
   currentStep = 0;
-  render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  applyState();
 }
 
 document.getElementById("btn-prev").addEventListener("click", () => navigate(-1));
@@ -161,4 +213,4 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-render();
+applyHash();
