@@ -1,0 +1,81 @@
+export const dating = {
+  id: "dating",
+  title: "Dating",
+  steps: [
+    {
+      id: "thecall",
+      title: "Make the date",
+      instructions: [
+        "Wait 4–5 days after getting their number before calling.",
+        "Call on a weekday between 18:00 and 20:00. Make sure your number is not hidden.",
+        "If they don't pick up, send one text: 'Hi [name], this is [your name]. Call me back on this number: [number]. Have a nice day.' Do not call again immediately.",
+        "Wait 3–4 days for a callback. Try once more if no response. If still nothing, they are not interested.",
+        "Keep small talk to a couple of minutes. The phone is for setting dates only.",
+        "Propose a specific day, time, and location directly: 'I want to take you out. How about [day] at [time] at [place]?'",
+        "If they give a scheduling conflict, offer one alternative. If they decline again without a counteroffer, wish them well and move on.",
+      ],
+    },
+    {
+      id: "planthedate",
+      title: "Plan the date",
+      instructions: [
+        "Use a coffee date (30 minutes, café, no alcohol, host pays) if you've spoken only briefly. Use a regular date (2–3 hours, restaurant, full meal, host pays) if you already had a real first conversation.",
+        "Have only one coffee date per person. The second meeting must be a proper date.",
+        "For regular dates, stick to restaurants for the first 4–5 dates. Avoid cinemas, clubs, or loud places.",
+        "Scout restaurants in advance. Visit alone, note the calmest tables, and reserve immediately after setting the date.",
+        "Do not take the same date to the same restaurant twice in a row. Rotate through 4–5 venues.",
+      ],
+    },
+    {
+      id: "showup",
+      title: "Show up right",
+      instructions: [
+        "Arrive 10–15 minutes early. If you will be late, text them.",
+        "Wait up to 30 minutes for a late date. If no message has arrived by then, you've been stood up. Leave.",
+        "Meet at the exact agreed spot, not nearby.",
+        "Watch how they treat the staff. Rudeness to service personnel is a major red flag.",
+        "Do not order alcohol unless they do. Limit yourself to 1–2 drinks maximum.",
+        "Eat at their pace to avoid conversational dead zones.",
+        "Order food you can eat cleanly.",
+      ],
+    },
+    {
+      id: "conversation",
+      title: "Keep the conversation going",
+      instructions: [
+        "Let them do most of the talking. Ask open-ended, engaging follow-up questions.",
+        "Memorise key things they mention and circle back to them later in the conversation.",
+        "Do not bring up your future together (exclusivity, marriage, children) on early dates.",
+        "Do not overshare about yourself. Let them dig for information.",
+        "Keep some humour present but keep it clean. Avoid edgy material until you know them better.",
+        "Do not brag about wealth or accomplishments. Let them discover those naturally.",
+        "Steer away from heavy topics (death, illness, bad news). Keep it light and positive.",
+      ],
+    },
+    {
+      id: "endthedate",
+      title: "End the date",
+      instructions: [
+        "End after 1.5–2 hours, ideally on a high note before things go flat.",
+        "Pay the bill. Politely decline their offer to split. Tell them the host pays.",
+        "If they insist hard on splitting, take note. It may signal disinterest.",
+        "Escort them to their transit stop or drive them home.",
+        "Say goodbye with a kiss on the mouth. Lean in, 1–2 seconds, no tongue, arms at your sides.",
+        "A kiss on the cheek means they see you as a friend only. Do not ask them out again.",
+        "Leave immediately after the kiss. Do not try to extend the night.",
+      ],
+    },
+    {
+      id: "betweendates",
+      title: "Between dates",
+      instructions: [
+        "Do not contact them after the date for any reason other than setting the next one.",
+        "Wait 4–5 days before calling to set the next date.",
+        "If they reach out to you unprompted, use that conversation to set a date right then.",
+        "Do not exhaust conversation topics over the phone. Save them for dates.",
+        "Do not push for sex after the first or second date. Wait until you are exclusive (typically dates 7–10).",
+        "If your date invites you in after a date, politely decline and tell them you have things tomorrow.",
+      ],
+    },
+  ],
+};
