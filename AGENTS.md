@@ -34,10 +34,32 @@ This is a PWA — a single-page mobile app that guides users through a dating wo
 - Service worker path prefix: `/DatingGuide/` (GitHub Pages subpath).
 - When updating cached assets, bump `CACHE_NAME` version in `service-worker.js`.
 
+## Project Structure
+
+```
+├── index.html              # HTML structure only
+├── css/
+│   └── styles.css          # All visual styles
+├── js/
+│   ├── workflow.js         # Workflow data (steps array) — pure data, no DOM
+│   ├── install.js          # Install banner and modal logic
+│   └── app.js              # App logic: render, navigate, reset; entry point
+├── tests/
+│   └── app.spec.js         # Playwright end-to-end tests
+├── playwright.config.js    # Playwright config (serves via `npx serve`)
+├── package.json            # Dev dependencies only (Playwright)
+├── Makefile                # Dev commands (install, dev, test, audit, skills)
+├── service-worker.js       # Offline caching (cache-first strategy)
+├── manifest.json           # PWA manifest
+└── .github/
+    └── workflows/
+        └── deploy.yml      # Auto-deploy to GitHub Pages on push to main
+```
+
 ## Current State
 
-- `index.html` is a monolith — all markup, styles, JS logic, and data in one file.
-- Before adding new behaviour, the code needs to be split into files by responsibility so it can be tested.
+- Code is split by responsibility: data, logic, presentation, styles.
 - Workflow content (the steps) is still placeholder — to be replaced with content from `AdamSomethingGuide.pdf`.
+- Basic Playwright tests cover render and navigation behaviour.
 
 See `plan.md` for the implementation roadmap.

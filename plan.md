@@ -9,11 +9,16 @@ The app is live at https://dialex.github.io/DatingGuide/ with:
 
 ---
 
-## Phase 1 — Prerequisites (do this first)
+## Phase 1 — Refactor: split monolith into testable files ✅
 
-> To be filled in by @dialex before content work begins.
-
-- [ ] **Task TBD** — something needs to happen before the content is written into the app
+- [x] Extract CSS → `css/styles.css`
+- [x] Extract workflow data → `js/workflow.js`
+- [x] Extract install banner logic → `js/install.js`
+- [x] Extract app logic → `js/app.js` (entry point, wires up events)
+- [x] `index.html` is now HTML-only, loads CSS and JS externally
+- [x] Service worker updated to cache new file paths (`dating-guide-v2`)
+- [x] Playwright tests added for render and navigation behaviour
+- [x] `package.json` added (devDependencies only), `Makefile` updated with `install` and `test` targets
 
 ---
 

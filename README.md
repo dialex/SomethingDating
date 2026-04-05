@@ -4,10 +4,12 @@ Live at: https://dialex.github.io/DatingGuide/
 
 ## Setup
 
-After cloning, restore the Claude Code skills:
+After cloning, install dependencies and browsers:
 
 ```bash
-make skills-install
+npm install
+npm run test:install
+npm run skills:install
 ```
 
 ## Development
@@ -15,7 +17,7 @@ make skills-install
 Start a local server (required for service workers to work):
 
 ```bash
-make dev
+npm run dev
 ```
 
 Then open http://localhost:3000/DatingGuide/ in your browser.
@@ -26,10 +28,13 @@ Then open http://localhost:3000/DatingGuide/ in your browser.
 
 | Command | Description |
 |---|---|
-| `make dev` | Local dev server at port 3000 |
-| `make skills-install` | Restore AI skills from `skills-lock.json` |
-| `make skills-update` | Update skills to latest versions |
-| `make audit` | Lighthouse PWA audit (requires `make dev` running) |
+| `npm run dev` | Local dev server at port 3000 |
+| `npm test` | Run all Playwright tests |
+| `npm run test:ui` | Run tests with interactive UI |
+| `npm run test:install` | Install Playwright browser binaries |
+| `npm run skills:install` | Restore AI skills from `skills-lock.json` |
+| `npm run skills:update` | Update skills to latest versions |
+| `npm run audit` | Lighthouse PWA audit (requires `npm run dev` running) |
 
 ## Deploy
 
@@ -38,14 +43,19 @@ Pushes to `main` auto-deploy to GitHub Pages via GitHub Actions.
 ## Project structure
 
 ```
-├── index.html          # App (single file — HTML, CSS, JS)
-├── manifest.json       # PWA manifest
-├── service-worker.js   # Offline caching
-├── icon-192.png        # App icons
-├── icon-512.png
-├── Makefile            # Dev commands
-├── skills-lock.json    # Installed Claude Code skills
+├── index.html              # HTML structure only
+├── css/
+│   └── styles.css          # All visual styles
+├── js/
+│   ├── workflow.js         # Workflow data (steps array)
+│   ├── install.js          # Install banner and modal logic
+│   └── app.js              # App logic + entry point
+├── tests/
+│   └── app.spec.js         # Playwright end-to-end tests
+├── playwright.config.js
+├── package.json
+├── skills-lock.json        # Installed Claude Code skills
 └── .github/
     └── workflows/
-        └── deploy.yml  # Auto-deploy to GitHub Pages
+        └── deploy.yml      # Auto-deploy to GitHub Pages
 ```

@@ -1,7 +1,11 @@
-const CACHE_NAME = "dating-guide-v1";
+const CACHE_NAME = "dating-guide-v1.2";
 const ASSETS = [
   "/DatingGuide/",
   "/DatingGuide/index.html",
+  "/DatingGuide/css/styles.css",
+  "/DatingGuide/js/app.js",
+  "/DatingGuide/js/workflow.js",
+  "/DatingGuide/js/install.js",
   "/DatingGuide/manifest.json",
   "/DatingGuide/icon-192.png",
   "/DatingGuide/icon-512.png",
@@ -10,7 +14,7 @@ const ASSETS = [
 // Install: cache all assets
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)),
   );
   self.skipWaiting();
 });
@@ -18,11 +22,13 @@ self.addEventListener("install", (event) => {
 // Activate: delete old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
-      )
-    )
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)),
+        ),
+      ),
   );
   self.clients.claim();
 });
@@ -30,8 +36,8 @@ self.addEventListener("activate", (event) => {
 // Fetch: cache-first, fall back to network
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then(
-      (cached) => cached || fetch(event.request)
-    )
+    caches
+      .match(event.request)
+      .then((cached) => cached || fetch(event.request)),
   );
 });
