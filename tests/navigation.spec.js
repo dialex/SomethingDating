@@ -3,6 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Button navigation", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
+    await page.locator("#section-intro").click();
   });
 
   test("next button is enabled on the first step", async ({ page }) => {
