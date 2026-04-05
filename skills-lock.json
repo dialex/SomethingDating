@@ -1,10 +1,20 @@
 {
   "version": 1,
   "skills": {
+    "playwright-testing": {
+      "source": "alinaqi/claude-bootstrap",
+      "sourceType": "github",
+      "computedHash": "0480672c299aeb5324c2747a60c5a7b0f847c091d59d9cd0da1d16b192af3953"
+    },
     "pwa-development": {
       "source": "alinaqi/claude-bootstrap",
       "sourceType": "github",
       "computedHash": "09f5dafcd57dee59114a8a832772ec8b537049436380537279cdce6e15b0978f"
+    },
+    "test-driven-development": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "computedHash": "126f1ebf6ccd414f42544f6e83d8cc5adb089e1108eaffb7c400701e37eecd9f"
     }
   }
 }
