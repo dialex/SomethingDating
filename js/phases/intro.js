@@ -6,11 +6,11 @@ export const intro = {
       id: "reality",
       title: "Accept how dating works",
       instructions: [
-        "Accept that dating rewards preparation. Don't rely on luck or fate.",
-        "Understand that romantic feelings are conditional. Your behaviour directly affects how someone feels about you.",
-        "Once the spark drops below a certain point, it cannot be recovered. Don't burn it through bad habits.",
-        "Stop obsessing over things you can't change (height, body type, etc.). Personality overwhelmingly matters more.",
-        "If someone rejects you over a trivial physical trait, you've dodged a bullet.",
+        "If you prepare you increase your chances, so don't wing it.",
+        "Your behaviour affects how someone feels about you.",
+        "Don't worry over things you can't change. Personality matters way more.",
+        "Once the spark drops below a certain point, it cannot be recovered.",
+        "If someone rejects you over a trivial trait, you've dodged a bullet.",
       ],
     },
     {
