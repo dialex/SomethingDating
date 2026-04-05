@@ -1,0 +1,28 @@
+#!/bin/sh
+# Bump patch version in manifest.json and service-worker.js on every commit.
+
+VERSION=$(node -p "require('./manifest.json').version")
+
+NEW_VERSION=$(node -p "
+  const parts = '$VERSION'.split('.').map(Number);
+  while (parts.length < 3) parts.push(0);
+  parts[2] += 1;
+  parts.join('.');
+")
+
+node -e "
+  const fs = require('fs');
+  const m = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+  m.version = '$NEW_VERSION';
+  fs.writeFileSync('manifest.json', JSON.stringify(m, null, 2) + '\n');
+"
+
+node -e "
+  const fs = require('fs');
+  let sw = fs.readFileSync('service-worker.js', 'utf8');
+  sw = sw.replace(/const CACHE_NAME = \"dating-guide-v[^\"]+\"/, 'const CACHE_NAME = \"dating-guide-v$NEW_VERSION\"');
+  fs.writeFileSync('service-worker.js', sw);
+"
+
+git add manifest.json service-worker.js
+echo "Version bumped to v$NEW_VERSION"

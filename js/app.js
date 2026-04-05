@@ -65,6 +65,14 @@ document.getElementById("btn-prev").addEventListener("click", () => navigate(-1)
 document.getElementById("btn-next").addEventListener("click", () => navigate(1));
 document.getElementById("btn-reset").addEventListener("click", reset);
 
+// Version display
+fetch("manifest.json")
+  .then(r => r.json())
+  .then(m => {
+    if (m.version) document.getElementById("app-version").textContent = "v" + m.version;
+  })
+  .catch(() => {});
+
 // Install banner
 setupInstallBanner();
 

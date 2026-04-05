@@ -395,3 +395,12 @@ button:disabled:active {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Version tag ── */
+#app-version {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  padding-top: 8px;
+}
