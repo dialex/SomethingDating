@@ -2,7 +2,7 @@
   "name": "dating-guide",
   "private": true,
   "scripts": {
-    "dev": "npx serve . --listen 3000",
+    "dev": "browser-sync start --server --port 3000 --files '**/*.html,**/*.js,**/*.css' --no-notify",
     "test": "playwright test --reporter=dot",
     "test:install": "playwright install --with-deps chromium",
     "test:ui": "playwright test --ui",
@@ -12,6 +12,7 @@
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
-    "@playwright/test": "^1.52.0"
+    "@playwright/test": "^1.52.0",
+    "browser-sync": "^3.0.4"
   }
 }
