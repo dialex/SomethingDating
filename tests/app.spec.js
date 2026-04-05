@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Dating Guide app", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/DatingGuide/");
+    await page.goto("/");
   });
 
   test("renders a step card on load", async ({ page }) => {
