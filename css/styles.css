@@ -401,14 +401,19 @@ button:disabled:active {
 }
 
 .home-title {
-  font-size: 44px;
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.15;
   background: linear-gradient(135deg, var(--primary), var(--primary-alt));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 6px;
+}
+
+.title-line-top {
+  display: block;
+  white-space: nowrap;
+  font-size: clamp(40px, calc(14.8vw - 5.9px), 137px);
 }
 
 .home-subtitle {
@@ -564,4 +569,9 @@ body.home header {
 }
 
 /* ── "Dating" word ── */
-.title-word-dating { font-family: 'Gorditas', cursive; }
+.title-word-dating {
+  display: block;
+  font-family: 'Gorditas', cursive;
+  font-size: clamp(80px, calc(29.1vw - 13.7px), 265px);
+  padding: 0.4em 0 0.28em;
+}

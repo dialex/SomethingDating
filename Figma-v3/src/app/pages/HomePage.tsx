@@ -20,10 +20,10 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-12 pt-8">
           <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
-            Your Dating Journey
+            Your Dating Guide
           </h1>
           <p className="text-gray-600 text-lg">
-            A step-by-step guide to building meaningful connections
+            A step-by-step guide to build meaningful connections
           </p>
         </div>
 
