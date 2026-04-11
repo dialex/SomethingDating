@@ -3,9 +3,6 @@
 
 ### HOME
 
-- increate space between cards
-- increase height of section below image with number of steps and start button
-- Change font for titles
 - Pick color theme
 - theme banner to match current desing
 

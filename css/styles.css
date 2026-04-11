@@ -400,7 +400,8 @@ button:disabled:active {
 
 .home-title {
   font-size: 44px;
-  font-weight: 800;
+  font-weight: 900;
+  line-height: 1.1;
   background: linear-gradient(135deg, #e11d48, #ec4899);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
