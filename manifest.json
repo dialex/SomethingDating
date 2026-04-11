@@ -1,14 +1,14 @@
 {
   "name": "Dating Guide",
-  "version": "1.2.18",
+  "version": "1.2.19",
   "short_name": "Date Guide",
   "description": "A step-by-step dating guide to help you navigate every stage with confidence.",
   "start_url": "/DatingGuide/",
   "scope": "/DatingGuide/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fafaf9",
-  "theme_color": "#7c3aed",
+  "background_color": "#fff1f2",
+  "theme_color": "#fff1f2",
   "icons": [
     {
       "src": "icon-192.png",
