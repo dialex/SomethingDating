@@ -21,19 +21,40 @@ function renderHome() {
   main.innerHTML = `
     <div class="section-grid">
       ${sections.map(s => `
-        <button class="section-btn" id="section-${s.id}">
-          ${s.title}
-        </button>
+        <div class="section-card" id="section-${s.id}">
+          <div class="section-card-image" style="--c1:${s.color[0]};--c2:${s.color[1]}">
+            <img class="section-card-photo" src="https://images.unsplash.com/photo-1623121181613-eeced17aea39?q=80&w=1180&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+            <div class="section-card-title">${s.title}</div>
+          </div>
+          <div class="section-card-footer">
+            <span>${s.steps ? s.steps.length + " steps" : "Coming soon"}</span>
+            <span class="section-card-cta">Start →</span>
+          </div>
+        </div>
       `).join("")}
-    </div>`;
+    </div>
+    <p class="home-footer-msg">Take your time with each phase. Great relationships are built step by step.</p>`;
 
   sections.forEach(s => {
     document.getElementById(`section-${s.id}`)
       .addEventListener("click", () => enterSection(s.id));
   });
+
+  document.getElementById("main-content").classList.add("home-view");
+  document.getElementById("home-header").style.display = "";
+  document.getElementById("app-title").style.display = "none";
+  document.body.classList.add("home");
+  document.querySelector("footer").style.display = "none";
+  document.getElementById("main-content").appendChild(document.getElementById("install-banner"));
 }
 
 function renderSection() {
+  document.getElementById("main-content").classList.remove("home-view");
+  document.getElementById("home-header").style.display = "none";
+  document.getElementById("app-title").style.display = "";
+  document.body.classList.remove("home");
+  document.querySelector("footer").style.display = "";
+  document.querySelector(".progress-wrap").before(document.getElementById("install-banner"));
   const section = sections.find(s => s.id === currentSectionId);
   elBtnBack().style.display = "";
 

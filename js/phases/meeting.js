@@ -1,6 +1,7 @@
 export const meeting = {
   id: "meeting",
   title: "Meeting",
+  color: ["#fbbf24", "#fb923c"],
   steps: [
     {
       id: "whoyouwant",

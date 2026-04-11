@@ -1,6 +1,7 @@
 export const dating = {
   id: "dating",
   title: "Dating",
+  color: ["#c084fc", "#f472b6"],
   steps: [
     {
       id: "thecall",

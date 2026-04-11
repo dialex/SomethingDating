@@ -396,30 +396,109 @@ button:disabled:active {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Home header ── */
+.home-header {
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+.home-title {
+  font-size: 26px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #e11d48, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+
+.home-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* ── Home footer message ── */
+.home-footer-msg {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.6);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  line-height: 1.5;
+}
+
+/* ── Home view background ── */
+body.home {
+  background: linear-gradient(160deg, #fff1f2 0%, #fff7ed 50%, #fdf2f8 100%);
+  max-width: 960px;
+}
+
+body.home header {
+  background: transparent;
+}
+
+
 /* ── Section home grid ── */
 .section-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
-.section-btn {
-  aspect-ratio: 1;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media (min-width: 600px) {
+  .section-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.section-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+.section-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.13);
+  cursor: pointer;
+}
+
+.section-card-image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  overflow: hidden;
+}
+
+.section-card-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: overlay;
+}
+
+.section-card-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+.section-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.section-card-cta {
+  color: #e11d48;
+  font-weight: 600;
 }
 
 /* ── WIP card ── */
