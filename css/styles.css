@@ -414,6 +414,7 @@ button:disabled:active {
   display: block;
   white-space: nowrap;
   font-size: clamp(40px, calc(14.8vw - 5.9px), 137px);
+  color: var(--primary);
 }
 
 .home-subtitle {
@@ -575,4 +576,15 @@ body.home header {
   font-size: clamp(80px, calc(29.1vw - 13.7px), 265px);
   margin-top: -0.55em;
   padding: 0.4em 0 0.28em;
+  background: linear-gradient(90deg, #e11d48, #e11dad, #e11d48);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: rainbow-shift 5s linear infinite;
+}
+
+@keyframes rainbow-shift {
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
 }
