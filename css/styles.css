@@ -18,10 +18,6 @@
   --radius-sm: 10px;
 }
 
-html, body {
-  height: 100%;
-}
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
@@ -403,7 +399,7 @@ button:disabled:active {
 }
 
 .home-title {
-  font-size: 26px;
+  font-size: 44px;
   font-weight: 800;
   background: linear-gradient(135deg, #e11d48, #ec4899);
   -webkit-background-clip: text;
@@ -484,7 +480,17 @@ body.home header {
   font-size: 22px;
   font-weight: 800;
   color: white;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Bottom gradient scrim — darkens the area behind the title */
+.section-card-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .section-card-footer {
