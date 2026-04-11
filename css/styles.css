@@ -5,13 +5,15 @@
 }
 
 :root {
-  --accent: #7c3aed;
-  --accent-light: #ede9fe;
-  --accent-dark: #5b21b6;
+  --primary: #e11d48;
+  --primary-alt: #ec4899;
+  --primary-light: #fce7ed;
+  --primary-dark: #be123c;
   --text-primary: #1c1917;
   --text-secondary: #78716c;
   --surface: #ffffff;
   --bg: #fafaf9;
+  --bg-home: linear-gradient(160deg, #fff1f2 0%, #fff7ed 50%, #fdf2f8 100%);
   --border: #e7e5e4;
   --danger: #dc2626;
   --radius: 16px;
@@ -20,7 +22,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background: var(--bg);
+  background: var(--bg-home);
   color: var(--text-primary);
   display: flex;
   flex-direction: column;
@@ -65,7 +67,7 @@ header {
 
 .progress-label strong {
   font-size: 13px;
-  color: var(--accent);
+  color: var(--primary);
 }
 
 .progress-track {
@@ -77,7 +79,7 @@ header {
 
 .progress-fill {
   height: 100%;
-  background: var(--accent);
+  background: var(--primary);
   border-radius: 99px;
   transition: width 0.35s ease;
 }
@@ -113,8 +115,8 @@ main {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--accent-light);
-  color: var(--accent);
+  background: var(--primary-light);
+  color: var(--primary);
   font-size: 14px;
   font-weight: 700;
   display: flex;
@@ -213,12 +215,12 @@ button:disabled:active {
 
 .btn-next {
   flex: 2;
-  background: var(--accent);
+  background: var(--primary);
   color: white;
 }
 
 .btn-next:not(:disabled):hover {
-  background: var(--accent-dark);
+  background: var(--primary-dark);
 }
 
 .btn-reset {
@@ -248,7 +250,7 @@ button:disabled:active {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--accent-light);
+  background: var(--primary-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,8 +273,8 @@ button:disabled:active {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--accent-light);
-  border: 1.5px solid #c4b5fd;
+  background: var(--primary-light);
+  border: 1.5px solid var(--primary-alt);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   cursor: pointer;
@@ -281,7 +283,7 @@ button:disabled:active {
 }
 
 .install-banner:active {
-  background: #ddd6fe;
+  background: #fecdd3;
 }
 
 .install-banner-icon {
@@ -297,17 +299,17 @@ button:disabled:active {
   display: block;
   font-size: 13px;
   font-weight: 700;
-  color: var(--accent-dark);
+  color: var(--primary-dark);
 }
 
 .install-banner-text span {
   font-size: 12px;
-  color: var(--accent);
+  color: var(--primary);
 }
 
 .install-banner-dismiss {
   font-size: 18px;
-  color: #a78bfa;
+  color: var(--primary-alt);
   padding: 4px;
   flex-shrink: 0;
 }
@@ -365,7 +367,7 @@ button:disabled:active {
 }
 
 .btn-modal-close {
-  background: var(--accent);
+  background: var(--primary);
   color: white;
   border-radius: var(--radius-sm);
   padding: 14px;
@@ -402,7 +404,7 @@ button:disabled:active {
   font-size: 44px;
   font-weight: 900;
   line-height: 1.1;
-  background: linear-gradient(135deg, #e11d48, #ec4899);
+  background: linear-gradient(135deg, var(--primary), var(--primary-alt));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -426,9 +428,8 @@ button:disabled:active {
   line-height: 1.5;
 }
 
-/* ── Home view background ── */
+/* ── Home view ── */
 body.home {
-  background: linear-gradient(160deg, #fff1f2 0%, #fff7ed 50%, #fdf2f8 100%);
   max-width: 960px;
 }
 
@@ -504,7 +505,7 @@ body.home header {
 }
 
 .section-card-cta {
-  color: #e11d48;
+  color: var(--primary);
   font-weight: 600;
 }
 
@@ -561,3 +562,6 @@ body.home header {
 .modal-title {
   font-family: 'Nunito', sans-serif;
 }
+
+/* ── "Dating" word ── */
+.title-word-dating { font-family: 'Gorditas', cursive; }
