@@ -573,5 +573,6 @@ body.home header {
   display: block;
   font-family: 'Gorditas', cursive;
   font-size: clamp(80px, calc(29.1vw - 13.7px), 265px);
+  margin-top: -0.55em;
   padding: 0.4em 0 0.28em;
 }
