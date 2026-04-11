@@ -1,6 +1,7 @@
 export const keeping = {
   id: "keeping",
   title: "Keeping",
+  color: ["#34d399", "#2dd4bf"],
   steps: [
     {
       id: "exclusive",
