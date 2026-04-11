@@ -19,7 +19,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   background: var(--bg);
   color: var(--text-primary);
   display: flex;
@@ -549,4 +549,14 @@ body.home header {
   color: var(--text-secondary);
   opacity: 0.5;
   padding-top: 8px;
+}
+
+/* ── Typography ── */
+.home-title,
+.section-card-title,
+.step-title,
+.completion-title,
+.wip-title,
+.modal-title {
+  font-family: 'Nunito', sans-serif;
 }
