@@ -440,7 +440,7 @@ body.home header {
 .section-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 24px;
 }
 
 @media (min-width: 600px) {
@@ -497,8 +497,8 @@ body.home header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
-  font-size: 13px;
+  padding: 16px 16px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
