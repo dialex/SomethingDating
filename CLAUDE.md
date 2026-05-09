@@ -23,12 +23,17 @@ No framework, no build step. Plain HTML + CSS + vanilla JS, deployed to GitHub P
 
 **Data flow:** `index.html` loads `js/app.js` as an ES module → `app.js` imports `sections` from `js/workflow.js` → renders views based on module-level state → re-renders on user interaction.
 
-**State** lives in `app.js` as module-level variables (`view`, `currentSectionId`, `currentStep`). Two views: `home` (2×2 section grid) and `section` (step-by-step workflow).
+**State** lives in `app.js` as module-level variables (`view`, `currentSectionId`, `currentStep`). Three views: `home` (section grid), `section` (step-by-step wizard), and `credits`.
 
-**Key files:**
-- `js/workflow.js` — pure data only (`sections[]` with nested `steps[]` and `instructions[]`), no DOM
-- `js/app.js` — all rendering and navigation logic
-- `js/install.js` — PWA install banner (platform-aware: iOS vs Android)
+**Folder layout:**
+- `js/` — application logic (no markup beyond template strings for dynamic lists)
+  - `workflow.js`, `phases/*.js` — pure phase data, no DOM
+  - `app.js` — all rendering and navigation logic
+  - `install.js` — PWA install banner (fetches the right `html/install-*.html`)
+- `css/styles.css` — single stylesheet
+- `html/` — static HTML partials fetched and injected by `app.js` / `install.js`
+  - `credits.html`, `install-ios.html`, `install-android.html`
+- `images/` — phase covers (`intro.jpg` etc.) plus `logo/` for app icons
 - `service-worker.js` — cache-first offline strategy; `CACHE_NAME` must be bumped when assets change
 - `manifest.json` — source of truth for app version (also synced in `service-worker.js`)
 
