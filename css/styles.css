@@ -237,20 +237,19 @@ body.wizard main {
 
 /* ── Footer (wizard nav) ── */
 footer {
-  padding: 14px 20px max(14px, env(safe-area-inset-bottom));
+  padding: 18px 20px max(18px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0,0,0,0.06);
+  gap: 12px;
+  background: transparent;
+  border: none;
 }
 
 .wizard-nav {
   display: flex;
-  gap: 12px;
-  align-items: stretch;
+  gap: 28px;
+  justify-content: center;
+  align-items: center;
 }
 
 button {
@@ -259,11 +258,11 @@ button {
   font-weight: 600;
   border: none;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.15s, transform 0.1s;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
 }
 
 button:active {
-  transform: scale(0.97);
+  transform: scale(0.94);
 }
 
 button:disabled {
@@ -271,35 +270,25 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.wizard-btn-prev {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: var(--surface);
-  color: var(--text-primary);
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
-  padding: 12px 22px;
-  font-size: 15px;
-}
-
+.wizard-btn-prev,
 .wizard-btn-next {
-  flex: 1;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  color: white;
-  border-radius: 999px;
-  padding: 14px 24px;
-  font-size: 16px;
-  font-weight: 700;
+  background: var(--surface);
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);
 }
 
-.wizard-btn-next.complete {
-  background: var(--success) !important;
+.wizard-btn-prev {
+  color: #ec4899;
+}
+
+.wizard-btn-next {
+  color: #10b981;
 }
 
 /* ── Footer meta (credits + version) ── */

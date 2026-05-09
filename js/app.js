@@ -125,12 +125,9 @@ function renderSection() {
 
   // Bottom nav state
   const btnPrev = $("btn-prev");
-  const btnNext = $("btn-next");
   btnPrev.style.visibility = stepIdx === 0 ? "hidden" : "visible";
-  btnNext.classList.toggle("complete", isLast);
-  btnNext.style.background = isLast ? "" : gradient;
-  $("btn-next-label").textContent = isLast ? "Complete" : "Next";
-  $("btn-next-arrow").style.display = isLast ? "none" : "";
+  $("btn-next-icon-heart").style.display = isLast ? "none" : "";
+  $("btn-next-icon-check").style.display = isLast ? "" : "none";
 }
 
 function renderCredits() {
