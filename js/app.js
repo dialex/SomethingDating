@@ -6,18 +6,21 @@ let currentSectionId = null;
 let currentStep = 0;
 let ignoreHashChange = false;
 
-const elProgressWrap = () => document.querySelector(".progress-wrap");
-const elNavButtons   = () => document.querySelector(".nav-buttons");
-const elBtnReset     = () => document.getElementById("btn-reset");
-const elBtnBack      = () => document.getElementById("btn-back");
+const $ = (id) => document.getElementById(id);
+const elFooter      = () => document.querySelector("footer");
+const elWizardNav   = () => $("wizard-nav");
+const elBtnChevron  = () => $("btn-chevron");
+const elFooterMeta  = () => document.querySelector(".footer-meta");
 
 function renderHome() {
-  elProgressWrap().style.display = "none";
-  elNavButtons().style.display   = "none";
-  elBtnReset().style.display     = "none";
-  elBtnBack().style.display      = "none";
+  document.body.classList.add("home");
+  document.body.classList.remove("wizard", "credits");
+  elBtnChevron().style.display = "none";
+  elFooter().style.display = "none";
+  $("home-header").style.display = "";
 
-  const main = document.getElementById("main-content");
+  const main = $("main-content");
+  main.classList.add("home-view");
   main.innerHTML = `
     <div class="section-grid">
       ${sections.map(s => `
@@ -37,33 +40,27 @@ function renderHome() {
     <p class="home-credits-link"><a href="#credits">Credits</a></p>`;
 
   sections.forEach(s => {
-    document.getElementById(`section-${s.id}`)
-      .addEventListener("click", () => enterSection(s.id));
+    $(`section-${s.id}`).addEventListener("click", () => enterSection(s.id));
   });
 
-  document.getElementById("main-content").classList.add("home-view");
-  document.getElementById("home-header").style.display = "";
-  document.getElementById("app-title").style.display = "none";
-  document.body.classList.add("home");
-  document.querySelector("footer").style.display = "none";
-  document.getElementById("main-content").appendChild(document.getElementById("install-banner"));
+  main.appendChild($("install-banner"));
 }
 
 function renderSection() {
-  document.getElementById("main-content").classList.remove("home-view");
-  document.getElementById("home-header").style.display = "none";
-  document.getElementById("app-title").style.display = "";
-  document.body.classList.remove("home");
-  document.querySelector("footer").style.display = "";
-  document.querySelector(".progress-wrap").before(document.getElementById("install-banner"));
+  document.body.classList.remove("home", "credits");
+  document.body.classList.add("wizard");
+  $("home-header").style.display = "none";
+  elBtnChevron().style.display = "";
+  elFooter().style.display = "";
+
   const section = sections.find(s => s.id === currentSectionId);
-  elBtnBack().style.display = "";
+  const main = $("main-content");
+  main.classList.remove("home-view");
 
   if (!section.steps) {
-    elProgressWrap().style.display = "none";
-    elNavButtons().style.display   = "none";
-    elBtnReset().style.display     = "none";
-    document.getElementById("main-content").innerHTML = `
+    elWizardNav().style.display = "none";
+    elFooterMeta().style.display = "";
+    main.innerHTML = `
       <div class="wip-card">
         <div class="wip-title">${section.title}</div>
         <p class="wip-sub">This section is still being written. Check back soon.</p>
@@ -71,67 +68,84 @@ function renderSection() {
     return;
   }
 
+  elWizardNav().style.display = "";
+  elFooterMeta().style.display = "";
+
   const steps = section.steps;
   const total = steps.length;
-  const isComplete = currentStep >= total;
+  const stepIdx = Math.min(Math.max(currentStep, 0), total - 1);
+  const step = steps[stepIdx];
+  const isLast = stepIdx === total - 1;
 
-  elProgressWrap().style.display = "";
-  elNavButtons().style.display   = "";
-  elBtnReset().style.display     = "";
+  const gradient = `linear-gradient(90deg, ${section.color[0]}, ${section.color[1]})`;
 
-  const displayStep = Math.min(currentStep + 1, total);
-  const pct = isComplete ? 100 : Math.round((currentStep / total) * 100);
-  document.getElementById("progress-text").textContent =
-    isComplete ? `All ${total} steps done` : `Step ${displayStep} of ${total}`;
-  document.getElementById("progress-pct").textContent = pct + "%";
-  document.getElementById("progress-fill").style.width = pct + "%";
+  // Segmented progress
+  const segments = steps.map((_, i) => {
+    const cls = i < stepIdx ? "done" : i === stepIdx ? "current" : "";
+    const style = (i <= stepIdx) ? `style="background:${gradient}"` : "";
+    return `<div class="wizard-progress-seg ${cls}" ${style}></div>`;
+  }).join("");
 
-  document.getElementById("btn-prev").disabled = isComplete || currentStep === 0;
-  document.getElementById("btn-next").disabled = false;
-  document.getElementById("btn-next").textContent =
-    currentStep === total - 1 ? "Finish" : isComplete ? "Next phase" : "Next";
-  elBtnReset().style.visibility = currentStep === 0 ? "hidden" : "visible";
-
-  if (isComplete) {
-    const sectionIndex = sections.findIndex(s => s.id === currentSectionId);
-    const nextSection = sections[sectionIndex + 1];
-    document.getElementById("main-content").innerHTML = `
-      <div class="completion-card">
-        <div class="completion-icon">✓</div>
-        <div class="completion-title">${section.title} done</div>
-        <p class="completion-sub">${
-          nextSection
-            ? `You're ready for the next phase: <strong>${nextSection.title}</strong>.`
-            : `You've completed the full guide. Go get 'em.`
-        }</p>
-      </div>`;
-    return;
+  // Extra block (optional)
+  let extraHtml = "";
+  if (step.extra) {
+    const desc = step.extra.description;
+    let body = "";
+    if (Array.isArray(desc)) {
+      body = `<ul class="wizard-extra-list">${desc.map(d => `<li>${d}</li>`).join("")}</ul>`;
+    } else if (desc) {
+      body = `<p class="wizard-extra-text">${desc}</p>`;
+    }
+    extraHtml = `
+      <aside class="wizard-extra">
+        <div class="wizard-extra-header">
+          <div class="wizard-extra-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 3a6 6 0 0 0-3.5 10.9V16a1.5 1.5 0 0 0 1.5 1.5h4a1.5 1.5 0 0 0 1.5-1.5v-2.1A6 6 0 0 0 12 3zm-2 17h4M11 21h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="wizard-extra-title">${step.extra.title}</h3>
+        </div>
+        ${body}
+      </aside>`;
   }
 
-  const step = steps[currentStep];
-  const items = step.instructions.map(i => `<li>${i}</li>`).join("");
-  document.getElementById("main-content").innerHTML = `
-    <div class="step-card">
-      <div class="step-header">
-        <div class="step-badge">${currentStep + 1}</div>
-        <h1 class="step-title">${step.title}</h1>
+  main.innerHTML = `
+    <section class="wizard">
+      <div class="wizard-phase-header">
+        <h1 class="wizard-phase-title">${section.title}</h1>
+        <p class="wizard-phase-subtitle">${section.subtitle || ""}</p>
       </div>
-      <ol class="instructions-list">${items}</ol>
-    </div>`;
+      <div class="wizard-progress">${segments}</div>
+      <div class="wizard-step-badge" style="background:${gradient}">Step ${stepIdx + 1} of ${total}</div>
+      <article class="wizard-step-card">
+        <h2 class="wizard-step-title">${step.title}</h2>
+        ${step.description ? `<p class="wizard-step-description">${step.description}</p>` : ""}
+        ${extraHtml}
+      </article>
+    </section>`;
+
+  // Bottom nav state
+  const btnPrev = $("btn-prev");
+  const btnNext = $("btn-next");
+  btnPrev.style.visibility = stepIdx === 0 ? "hidden" : "visible";
+  btnNext.classList.toggle("complete", isLast);
+  btnNext.style.background = isLast ? "" : gradient;
+  $("btn-next-label").textContent = isLast ? "Complete" : "Next";
+  $("btn-next-arrow").style.display = isLast ? "none" : "";
 }
 
 function renderCredits() {
-  elProgressWrap().style.display = "none";
-  elNavButtons().style.display   = "none";
-  elBtnReset().style.display     = "none";
-  elBtnBack().style.display      = "";
-  document.getElementById("main-content").classList.remove("home-view");
-  document.getElementById("home-header").style.display = "none";
-  document.getElementById("app-title").style.display = "";
-  document.body.classList.remove("home");
-  document.querySelector("footer").style.display = "";
+  document.body.classList.remove("home", "wizard");
+  document.body.classList.add("credits");
+  $("home-header").style.display = "none";
+  elBtnChevron().style.display = "";
+  elFooter().style.display = "";
+  elWizardNav().style.display = "none";
+  elFooterMeta().style.display = "";
 
-  document.getElementById("main-content").innerHTML = `
+  const main = $("main-content");
+  main.classList.remove("home-view");
+
+  main.innerHTML = `
     <div class="credits-card">
       <h2 class="credits-title">Credits</h2>
       <p class="credits-intro">Guide based on the work of Adam Something. App by Diogo Nunes.</p>
@@ -181,8 +195,6 @@ function render() {
 function hashForState() {
   if (view === "home") return "";
   if (view === "credits") return "credits";
-  const section = sections.find(s => s.id === currentSectionId);
-  if (currentStep >= section.steps.length) return `${currentSectionId}/done`;
   return `${currentSectionId}/${currentStep + 1}`;
 }
 
@@ -214,12 +226,9 @@ function applyHash() {
     } else {
       view = "section";
       currentSectionId = sectionId;
-      if (stepPart === "done") {
-        currentStep = section.steps.length;
-      } else {
-        const n = parseInt(stepPart, 10);
-        currentStep = isNaN(n) ? 0 : Math.max(0, n - 1);
-      }
+      const n = parseInt(stepPart, 10);
+      const max = section.steps ? section.steps.length - 1 : 0;
+      currentStep = isNaN(n) ? 0 : Math.max(0, Math.min(n - 1, max));
     }
   }
   render();
@@ -245,19 +254,15 @@ function enterSection(id) {
 
 export function navigate(dir) {
   const section = sections.find(s => s.id === currentSectionId);
+  if (!section || !section.steps) return;
   const total = section.steps.length;
-  if (dir === 1 && currentStep >= total) {
+  if (dir === 1 && currentStep >= total - 1) {
     goHome();
     return;
   }
   const next = currentStep + dir;
   if (next < 0) return;
   currentStep = next;
-  applyState();
-}
-
-export function reset() {
-  currentStep = 0;
   applyState();
 }
 
@@ -268,17 +273,16 @@ function goHome() {
   applyState();
 }
 
-document.getElementById("btn-prev").addEventListener("click", () => navigate(-1));
-document.getElementById("btn-next").addEventListener("click", () => navigate(1));
-document.getElementById("btn-reset").addEventListener("click", reset);
-document.getElementById("btn-back").addEventListener("click", goHome);
+$("btn-prev").addEventListener("click", () => navigate(-1));
+$("btn-next").addEventListener("click", () => navigate(1));
+$("btn-chevron").addEventListener("click", goHome);
 
 setupInstallBanner();
 
 fetch("manifest.json")
   .then(r => r.json())
   .then(m => {
-    if (m.version) document.getElementById("app-version").textContent = "v" + m.version;
+    if (m.version) $("app-version").textContent = "v" + m.version;
   })
   .catch(() => {});
 
