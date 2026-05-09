@@ -283,7 +283,7 @@ button:disabled {
   justify-content: center;
   background: var(--surface);
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  transition: color 1s ease, transform 0.1s, box-shadow 0.15s;
+  transition: color 0.5s ease, transform 0.1s, box-shadow 0.15s;
 }
 
 .wizard-btn-prev::before,
@@ -293,7 +293,7 @@ button:disabled {
   inset: 0;
   border-radius: 50%;
   transform: scale(0);
-  transition: transform 1s ease;
+  transition: transform 0.5s ease;
 }
 
 .wizard-btn-prev::before { background: #ec4899; }
