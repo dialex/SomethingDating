@@ -1,6 +1,6 @@
 {
   "name": "Dating Guide",
-  "version": "1.2.37",
+  "version": "1.2.38",
   "short_name": "Date Guide",
   "description": "A step-by-step dating guide to help you navigate every stage with confidence.",
   "start_url": "/DatingGuide/",
@@ -11,13 +11,13 @@
   "theme_color": "#fff1f2",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "images/logo/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "images/logo/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
