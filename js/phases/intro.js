@@ -2,6 +2,7 @@ export const intro = {
   id: "intro",
   title: "Intro",
   color: ["#f472b6", "#fb7185"],
+  cover: "images/intro.jpg",
   steps: [
     {
       id: "reality",

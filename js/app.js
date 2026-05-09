@@ -139,6 +139,12 @@ function renderCredits() {
       <h3 class="credits-section">Photography</h3>
       <ul class="credits-list">
         <li>
+          <strong>Intro</strong> — Photo by
+          <a href="https://unsplash.com/@grakozy?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Greg Rakozy</a>
+          on
+          <a href="https://unsplash.com/photos/silhouette-photography-of-person-oMpAz-DN-9I?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
+        </li>
+        <li>
           <strong>Meeting</strong> — Photo by
           <a href="https://unsplash.com/@silverkblack?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Vitaly Gariev</a>
           on
