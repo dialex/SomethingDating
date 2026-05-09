@@ -143,7 +143,7 @@ async function renderCredits() {
   const main = $("main-content");
   main.classList.remove("home-view");
 
-  const html = await fetch("credits.html").then(r => r.text());
+  const html = await fetch("html/credits.html").then(r => r.text());
   main.innerHTML = html;
 }
 
