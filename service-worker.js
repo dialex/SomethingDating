@@ -1,4 +1,4 @@
-const CACHE_NAME = "dating-guide-v1.2.30";
+const CACHE_NAME = "dating-guide-v1.2.31";
 const ASSETS = [
   "/DatingGuide/",
   "/DatingGuide/index.html",

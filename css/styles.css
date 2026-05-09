@@ -272,6 +272,8 @@ button:disabled {
 
 .wizard-btn-prev,
 .wizard-btn-next {
+  position: relative;
+  overflow: hidden;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -281,14 +283,39 @@ button:disabled {
   justify-content: center;
   background: var(--surface);
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: color 1s ease, transform 0.1s, box-shadow 0.15s;
 }
 
-.wizard-btn-prev {
-  color: #ec4899;
+.wizard-btn-prev::before,
+.wizard-btn-next::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 1s ease;
 }
 
-.wizard-btn-next {
-  color: #10b981;
+.wizard-btn-prev::before { background: #ec4899; }
+.wizard-btn-next::before { background: #10b981; }
+
+.wizard-btn-prev svg,
+.wizard-btn-next svg {
+  position: relative;
+  z-index: 1;
+}
+
+.wizard-btn-prev { color: #ec4899; }
+.wizard-btn-next { color: #10b981; }
+
+.wizard-btn-prev:hover,
+.wizard-btn-next:hover {
+  color: var(--surface);
+}
+
+.wizard-btn-prev:hover::before,
+.wizard-btn-next:hover::before {
+  transform: scale(1);
 }
 
 /* ── Footer meta (credits + version) ── */
