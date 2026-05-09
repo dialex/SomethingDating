@@ -330,14 +330,16 @@ button:disabled {
 .wizard-btn-prev { color: #ec4899; }
 .wizard-btn-next { color: #10b981; }
 
-.wizard-btn-prev:hover,
-.wizard-btn-next:hover {
-  color: var(--surface);
-}
+@media (hover: hover) {
+  .wizard-btn-prev:hover,
+  .wizard-btn-next:hover {
+    color: var(--surface);
+  }
 
-.wizard-btn-prev:hover::before,
-.wizard-btn-next:hover::before {
-  transform: scale(1);
+  .wizard-btn-prev:hover::before,
+  .wizard-btn-next:hover::before {
+    transform: scale(1);
+  }
 }
 
 /* ── Footer meta (credits + version) ── */
