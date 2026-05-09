@@ -140,9 +140,9 @@ function renderCredits() {
       <ul class="credits-list">
         <li>
           <strong>Intro</strong> — Photo by
-          <a href="https://unsplash.com/@grakozy?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Greg Rakozy</a>
+          <a href="https://unsplash.com/@joshhild?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Josh Hild</a>
           on
-          <a href="https://unsplash.com/photos/silhouette-photography-of-person-oMpAz-DN-9I?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
+          <a href="https://unsplash.com/photos/person-sitting-and-facing-back-under-blue-and-white-sky-GXOU59djQU0?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
         </li>
         <li>
           <strong>Meeting</strong> — Photo by
