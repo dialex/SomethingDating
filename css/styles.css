@@ -65,18 +65,16 @@ body.wizard header {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.7);
+  background: var(--surface);
   border: none;
   color: var(--text-primary);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
 .btn-chevron:active {
   transform: scale(0.94);
-  background: rgba(255,255,255,0.9);
 }
 
 /* ── Main content ── */
@@ -414,10 +412,13 @@ body:not(.home) .install-banner {
 }
 
 .install-banner-dismiss {
-  font-size: 18px;
+  background: transparent;
   color: var(--primary-alt);
   padding: 4px;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ── Install instructions modal ── */
@@ -467,10 +468,15 @@ body:not(.home) .install-banner {
 }
 
 .modal-step-icon {
-  font-size: 24px;
   flex-shrink: 0;
   width: 36px;
-  text-align: center;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  background: var(--primary-light);
+  border-radius: 50%;
 }
 
 .btn-modal-close {
@@ -635,6 +641,9 @@ body:not(.home) .install-banner {
 .section-card-cta {
   color: var(--primary);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* ── WIP card ── */

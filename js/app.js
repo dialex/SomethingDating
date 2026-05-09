@@ -31,7 +31,7 @@ function renderHome() {
           </div>
           <div class="section-card-footer">
             <span>${s.steps ? s.steps.length + " steps" : "Coming soon"}</span>
-            <span class="section-card-cta">Start →</span>
+            <span class="section-card-cta">Start <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
           </div>
         </div>
       `).join("")}
@@ -100,7 +100,8 @@ function renderSection() {
       <aside class="wizard-extra">
         <div class="wizard-extra-header">
           <div class="wizard-extra-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 3a6 6 0 0 0-3.5 10.9V16a1.5 1.5 0 0 0 1.5 1.5h4a1.5 1.5 0 0 0 1.5-1.5v-2.1A6 6 0 0 0 12 3zm-2 17h4M11 21h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <!-- lucide: lightbulb -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
           </div>
           <h3 class="wizard-extra-title">${step.extra.title}</h3>
         </div>

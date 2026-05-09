@@ -47,6 +47,24 @@ No framework, no build step. Plain HTML + CSS + vanilla JS, deployed to GitHub P
 - **No** em-dashes (`—`), colons introducing explanations, or semicolons — split into multiple sentences instead
 - **Parentheses** only for clarifications or examples
 
+## Icons
+
+Icons are inline SVGs taken from [Lucide](https://lucide.dev/icons). Each one is preceded by an HTML comment marking its Lucide name, e.g.:
+
+```html
+<!-- lucide: chevron-left -->
+<svg ...>...</svg>
+```
+
+To add or update an icon:
+1. Visit `https://lucide.dev/icons/<name>` and copy the SVG markup.
+2. Paste it inline at the call site, prefixed with `<!-- lucide: <name> -->`.
+3. Strip the `class="lucide ..."` attribute and adjust `width`/`height` to fit the slot. Keep `stroke="currentColor"` so CSS `color` controls the icon.
+
+Modal install-step icons live in `js/install.js` as a small `ICON` map of SVG strings (same convention).
+
+No npm package is used — there is no bundler in this project, so we hand-copy paths from the Lucide source. If the icon set grows, consider installing `lucide-static` as a dev dep and adding a `build:icons` script that copies the SVGs we use into `js/icons/`.
+
 ## Deployment
 
 Pushes to `main` auto-deploy to `https://dialex.github.io/DatingGuide/` via GitHub Actions. The service worker uses `/DatingGuide/` as the path prefix for all cached assets.
