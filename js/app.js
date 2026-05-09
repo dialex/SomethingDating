@@ -50,7 +50,7 @@ function renderSection() {
   document.body.classList.remove("home", "credits");
   document.body.classList.add("wizard");
   $("home-header").style.display = "none";
-  elBtnChevron().style.display = "";
+  elBtnChevron().style.display = "none";
   elFooter().style.display = "";
 
   const section = sections.find(s => s.id === currentSectionId);
@@ -272,6 +272,7 @@ function goHome() {
 
 $("btn-prev").addEventListener("click", () => navigate(-1));
 $("btn-next").addEventListener("click", () => navigate(1));
+$("btn-restart").addEventListener("click", goHome);
 $("btn-chevron").addEventListener("click", goHome);
 
 setupInstallBanner();
