@@ -131,7 +131,7 @@ function renderSection() {
   $("btn-next-icon-check").style.display = isLast ? "" : "none";
 }
 
-function renderCredits() {
+async function renderCredits() {
   document.body.classList.remove("home", "wizard");
   document.body.classList.add("credits");
   $("home-header").style.display = "none";
@@ -143,39 +143,8 @@ function renderCredits() {
   const main = $("main-content");
   main.classList.remove("home-view");
 
-  main.innerHTML = `
-    <div class="credits-card">
-      <h2 class="credits-title">Credits</h2>
-      <p class="credits-intro">Guide based on the work of Adam Something. App by Diogo Nunes.</p>
-
-      <h3 class="credits-section">Photography</h3>
-      <ul class="credits-list">
-        <li>
-          <strong>Intro</strong> — Photo by
-          <a href="https://unsplash.com/@joshhild?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Josh Hild</a>
-          on
-          <a href="https://unsplash.com/photos/person-sitting-and-facing-back-under-blue-and-white-sky-GXOU59djQU0?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
-        </li>
-        <li>
-          <strong>Meeting</strong> — Photo by
-          <a href="https://unsplash.com/@silverkblack?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Vitaly Gariev</a>
-          on
-          <a href="https://unsplash.com/photos/friends-enjoying-drinks-and-snacks-on-a-rooftop-eQlU4-7PGHw?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
-        </li>
-        <li>
-          <strong>Dating</strong> — Photo by
-          <a href="https://unsplash.com/@chen93?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Chen</a>
-          on
-          <a href="https://unsplash.com/photos/man-and-woman-kissing-during-sunset-PQ4KXiYoEC4?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
-        </li>
-        <li>
-          <strong>Keeping</strong> — Photo by
-          <a href="https://unsplash.com/@byelestudio?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Lucía Garcia Atienza</a>
-          on
-          <a href="https://unsplash.com/photos/couple-holding-hands-on-a-beach-spnCjYb3G1s?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
-        </li>
-      </ul>
-    </div>`;
+  const html = await fetch("credits.html").then(r => r.text());
+  main.innerHTML = html;
 }
 
 function render() {
