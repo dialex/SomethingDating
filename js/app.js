@@ -23,7 +23,7 @@ function renderHome() {
       ${sections.map(s => `
         <div class="section-card" id="section-${s.id}">
           <div class="section-card-image" style="--c1:${s.color[0]};--c2:${s.color[1]}">
-            <img class="section-card-photo" src="https://images.unsplash.com/photo-1623121181613-eeced17aea39?q=80&w=1180&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+            ${s.cover ? `<img class="section-card-photo" src="${s.cover}" alt="" />` : ""}
             <div class="section-card-title">${s.title}</div>
           </div>
           <div class="section-card-footer">
@@ -33,7 +33,8 @@ function renderHome() {
         </div>
       `).join("")}
     </div>
-    <p class="home-footer-msg">Take your time with each phase. Great relationships are built step by step.</p>`;
+    <p class="home-footer-msg">Take your time with each phase. Great relationships are built step by step.</p>
+    <p class="home-credits-link"><a href="#credits">Credits</a></p>`;
 
   sections.forEach(s => {
     document.getElementById(`section-${s.id}`)
@@ -119,9 +120,39 @@ function renderSection() {
     </div>`;
 }
 
+function renderCredits() {
+  elProgressWrap().style.display = "none";
+  elNavButtons().style.display   = "none";
+  elBtnReset().style.display     = "none";
+  elBtnBack().style.display      = "";
+  document.getElementById("main-content").classList.remove("home-view");
+  document.getElementById("home-header").style.display = "none";
+  document.getElementById("app-title").style.display = "";
+  document.body.classList.remove("home");
+  document.querySelector("footer").style.display = "";
+
+  document.getElementById("main-content").innerHTML = `
+    <div class="credits-card">
+      <h2 class="credits-title">Credits</h2>
+      <p class="credits-intro">Guide based on the work of Adam Something. App by Diogo Nunes.</p>
+
+      <h3 class="credits-section">Photography</h3>
+      <ul class="credits-list">
+        <li>
+          <strong>Meeting</strong> — Photo by
+          <a href="https://unsplash.com/@silverkblack?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Vitaly Gariev</a>
+          on
+          <a href="https://unsplash.com/photos/friends-enjoying-drinks-and-snacks-on-a-rooftop-eQlU4-7PGHw?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
+        </li>
+      </ul>
+    </div>`;
+}
+
 function render() {
   if (view === "home") {
     renderHome();
+  } else if (view === "credits") {
+    renderCredits();
   } else {
     renderSection();
   }
@@ -131,6 +162,7 @@ function render() {
 
 function hashForState() {
   if (view === "home") return "";
+  if (view === "credits") return "credits";
   const section = sections.find(s => s.id === currentSectionId);
   if (currentStep >= section.steps.length) return `${currentSectionId}/done`;
   return `${currentSectionId}/${currentStep + 1}`;
@@ -148,6 +180,10 @@ function applyHash() {
   const hash = location.hash.slice(1);
   if (!hash) {
     view = "home";
+    currentSectionId = null;
+    currentStep = 0;
+  } else if (hash === "credits") {
+    view = "credits";
     currentSectionId = null;
     currentStep = 0;
   } else {

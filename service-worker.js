@@ -1,4 +1,4 @@
-const CACHE_NAME = "dating-guide-v1.2.20";
+const CACHE_NAME = "dating-guide-v1.2.21";
 const ASSETS = [
   "/DatingGuide/",
   "/DatingGuide/index.html",
@@ -6,9 +6,14 @@ const ASSETS = [
   "/DatingGuide/js/app.js",
   "/DatingGuide/js/workflow.js",
   "/DatingGuide/js/install.js",
+  "/DatingGuide/js/phases/intro.js",
+  "/DatingGuide/js/phases/meeting.js",
+  "/DatingGuide/js/phases/dating.js",
+  "/DatingGuide/js/phases/keeping.js",
   "/DatingGuide/manifest.json",
   "/DatingGuide/icon-192.png",
   "/DatingGuide/icon-512.png",
+  "/DatingGuide/images/meeting.jpg",
 ];
 
 // Install: cache all assets
