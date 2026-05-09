@@ -2,6 +2,7 @@ export const keeping = {
   id: "keeping",
   title: "Keeping",
   color: ["#34d399", "#2dd4bf"],
+  cover: "images/keeping.jpg",
   steps: [
     {
       id: "exclusive",

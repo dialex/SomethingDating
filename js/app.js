@@ -156,6 +156,12 @@ function renderCredits() {
           on
           <a href="https://unsplash.com/photos/grayscale-photo-of-couple-sitting-on-chair-eHto7efWCU8?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
         </li>
+        <li>
+          <strong>Keeping</strong> — Photo by
+          <a href="https://unsplash.com/@byelestudio?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Lucía Garcia Atienza</a>
+          on
+          <a href="https://unsplash.com/photos/couple-holding-hands-on-a-beach-spnCjYb3G1s?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
+        </li>
       </ul>
     </div>`;
 }
