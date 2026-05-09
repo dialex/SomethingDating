@@ -152,9 +152,9 @@ function renderCredits() {
         </li>
         <li>
           <strong>Dating</strong> — Photo by
-          <a href="https://unsplash.com/@mikcudi?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Miguel Andrade Guerrero</a>
+          <a href="https://unsplash.com/@chen93?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Chen</a>
           on
-          <a href="https://unsplash.com/photos/grayscale-photo-of-couple-sitting-on-chair-eHto7efWCU8?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
+          <a href="https://unsplash.com/photos/man-and-woman-kissing-during-sunset-PQ4KXiYoEC4?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
         </li>
         <li>
           <strong>Keeping</strong> — Photo by
