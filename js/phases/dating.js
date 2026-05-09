@@ -2,6 +2,7 @@ export const dating = {
   id: "dating",
   title: "Dating",
   color: ["#c084fc", "#f472b6"],
+  cover: "images/dating.jpg",
   steps: [
     {
       id: "thecall",

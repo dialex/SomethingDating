@@ -144,6 +144,12 @@ function renderCredits() {
           on
           <a href="https://unsplash.com/photos/friends-enjoying-drinks-and-snacks-on-a-rooftop-eQlU4-7PGHw?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
         </li>
+        <li>
+          <strong>Dating</strong> — Photo by
+          <a href="https://unsplash.com/@mikcudi?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Miguel Andrade Guerrero</a>
+          on
+          <a href="https://unsplash.com/photos/grayscale-photo-of-couple-sitting-on-chair-eHto7efWCU8?utm_source=DatingGuide&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>.
+        </li>
       </ul>
     </div>`;
 }
