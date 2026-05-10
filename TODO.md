@@ -1,15 +1,13 @@
 ## TODO
 
+- Review all the steps, because they don't seem to capture the most important things, judging by what I read manually
 
 ### OTHERS
 
-- [ ] Review all the steps, because they don't seem to capture the most important things, judging by what I read manually
-- [ ] Persist progress in `localStorage` so users can close and return
-- [ ] Add step-specific icons or emoji to cards
-- [ ] Color scheme
-- [ ] Dark mode support
-- [ ] Emojis or illustrations
-- [ ] Translations
+- Dark mode support. Toggle to left of the credits link, sun and moon
+- Translations. Toggle to right of the credits link, Flag and language code, 2 letters. EN and PT to start.
+- Persist progress in `localStorage` so users can close and return
 
-- Animations on transitions
+- Animations on transitions, like this to load the homepage for the first time https://github.com/swup/demos/tree/main/multiple/
+- this for hovering cards in the home page https://motion.dev/docs/hover#usage
 - When the user enters or leaves a wizard it should animate a circle transition from the center of the screen, that refreshes the entire screen. I think this is an example: https://github.com/swup/demos/tree/main/reveal/
