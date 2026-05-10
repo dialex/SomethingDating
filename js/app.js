@@ -137,6 +137,28 @@ function renderSection() {
 
   main.replaceChildren(node);
 
+  // Wire swipe gestures on the rendered card
+  const card = main.querySelector(".wizard-step-card");
+  if (card) {
+    attachSwipe(card);
+
+    // Slide the new card in from the opposite side of the previous swipe.
+    if (pendingEnterDir !== null) {
+      const dir = pendingEnterDir;
+      pendingEnterDir = null;
+      // New card slides in from the opposite side: next from the left, back from the right.
+      const startOffset = dir > 0 ? -window.innerWidth : window.innerWidth;
+      card.classList.add("is-entering");
+      card.style.transform = `translateX(${startOffset}px)`;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          card.classList.remove("is-entering");
+          card.style.transform = "";
+        });
+      });
+    }
+  }
+
   // Bottom nav state
   $("btn-next-icon-heart").style.display = isLast ? "none" : "";
   $("btn-next-icon-check").style.display = isLast ? "" : "none";
@@ -251,8 +273,109 @@ function goHome() {
   applyState();
 }
 
-$("btn-prev").addEventListener("click", () => navigate(-1));
-$("btn-next").addEventListener("click", () => navigate(1));
+// --- Swipe + animated transition ---
+const SWIPE_THRESHOLD = 70;
+const SWIPE_DURATION = 400;
+let pendingEnterDir = null; // direction the new card should slide IN from
+
+function animateOutThenNavigate(card, dir) {
+  if (!card || card.dataset.leaving) {
+    navigate(dir);
+    return;
+  }
+  card.dataset.leaving = "1";
+  // dir > 0 (next) — card exits to the right; dir < 0 (back) — card exits to the left.
+  const offset = dir > 0 ? window.innerWidth : -window.innerWidth;
+  card.style.transform = `translateX(${offset}px)`;
+  card.style.opacity = "0";
+  let done = false;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    pendingEnterDir = dir;
+    navigate(dir);
+  };
+  card.addEventListener("transitionend", finish, { once: true });
+  setTimeout(finish, SWIPE_DURATION + 50);
+}
+
+function navigateAnimated(dir) {
+  const card = document.querySelector(".wizard-step-card");
+  if (!card) {
+    navigate(dir);
+    return;
+  }
+  animateOutThenNavigate(card, dir);
+}
+
+function clearActiveButtons() {
+  $("btn-prev").classList.remove("is-active");
+  $("btn-next").classList.remove("is-active");
+}
+
+function highlightForDelta(dx) {
+  // Swipe right (dx > 0) = next; swipe left (dx < 0) = back.
+  clearActiveButtons();
+  if (dx > 0) $("btn-next").classList.add("is-active");
+  else if (dx < 0) $("btn-prev").classList.add("is-active");
+}
+
+function attachSwipe(card) {
+  let startX = 0;
+  let startY = 0;
+  let dx = 0;
+  let dragging = false;
+  let axisLocked = null; // "x" once we commit to horizontal
+
+  card.addEventListener("pointerdown", (e) => {
+    if (card.dataset.leaving) return;
+    startX = e.clientX;
+    startY = e.clientY;
+    dx = 0;
+    dragging = true;
+    axisLocked = null;
+  });
+
+  card.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const ax = e.clientX - startX;
+    const ay = e.clientY - startY;
+    if (axisLocked === null) {
+      if (Math.abs(ax) < 6 && Math.abs(ay) < 6) return;
+      axisLocked = Math.abs(ax) > Math.abs(ay) ? "x" : "y";
+      if (axisLocked === "x") {
+        card.classList.add("is-swiping");
+        card.setPointerCapture(e.pointerId);
+      } else {
+        dragging = false;
+        return;
+      }
+    }
+    dx = ax;
+    card.style.transform = `translateX(${dx}px)`;
+    highlightForDelta(dx);
+  });
+
+  const release = () => {
+    if (!dragging && !card.classList.contains("is-swiping")) return;
+    dragging = false;
+    card.classList.remove("is-swiping");
+    clearActiveButtons();
+    if (Math.abs(dx) > SWIPE_THRESHOLD) {
+      const dir = dx > 0 ? 1 : -1;
+      animateOutThenNavigate(card, dir);
+    } else {
+      card.style.transform = "";
+    }
+    dx = 0;
+  };
+
+  card.addEventListener("pointerup", release);
+  card.addEventListener("pointercancel", release);
+}
+
+$("btn-prev").addEventListener("click", () => navigateAnimated(-1));
+$("btn-next").addEventListener("click", () => navigateAnimated(1));
 $("btn-restart").addEventListener("click", goHome);
 $("btn-chevron").addEventListener("click", goHome);
 

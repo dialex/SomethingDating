@@ -154,6 +154,18 @@ body.wizard main {
   flex-direction: column;
   gap: 16px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  touch-action: pan-y;
+  transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.wizard-step-card.is-swiping {
+  transition: none;
+}
+
+.wizard-step-card.is-entering {
+  transition: none;
 }
 
 .wizard-step-title {
@@ -359,6 +371,16 @@ button:disabled {
   .wizard-btn-next:hover::before {
     transform: scale(1);
   }
+}
+
+.wizard-btn-prev.is-active,
+.wizard-btn-next.is-active {
+  color: var(--surface);
+}
+
+.wizard-btn-prev.is-active::before,
+.wizard-btn-next.is-active::before {
+  transform: scale(1);
 }
 
 /* ── Home meta (credits + version) ── */

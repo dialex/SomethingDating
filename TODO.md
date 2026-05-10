@@ -13,4 +13,4 @@
 
 - Animations on transitions
 - The user can swipe the step card left or right. Swiping to the left is the same as clicking the back button. Swiping to the right is the same as clicking next.
-- Even when the user clicks the bottom buttons, the step card still animates the swipe. let
+- Even when the user clicks the bottom buttons, the step card still animates the swipe.
