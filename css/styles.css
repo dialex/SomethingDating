@@ -168,6 +168,93 @@ body.wizard main {
   transition: none;
 }
 
+/* ── Wizard stack (peek behind active card) ── */
+.wizard-stack {
+  position: relative;
+}
+
+/* Decorative stack shadows: two cards always peeking behind the active one. */
+.wizard-stack::before,
+.wizard-stack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+}
+
+.wizard-stack::before {
+  z-index: 1;
+  transform: scale(0.96) translateY(10px);
+  opacity: 0.7;
+}
+
+.wizard-stack::after {
+  z-index: 0;
+  transform: scale(0.92) translateY(20px);
+  opacity: 0.4;
+}
+
+.wizard-stack > .wizard-step-card:not(.peek) {
+  position: relative;
+  z-index: 3;
+}
+
+.wizard-stack > .peek {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.92) translateY(16px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.peek-skeleton .skeleton-line {
+  height: 14px;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 4px;
+}
+
+.peek-skeleton .skeleton-line.title {
+  height: 26px;
+  width: 65%;
+  margin-bottom: 6px;
+}
+
+.peek-skeleton .skeleton-line.short { width: 55%; }
+.peek-skeleton .skeleton-line.medium { width: 80%; }
+
+.peek-skeleton .peek-tips {
+  background: rgba(254, 243, 199, 0.55);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+  flex: 1;
+}
+
+.peek-home {
+  align-items: center;
+  justify-content: center;
+}
+
+.peek-home svg {
+  width: 50%;
+  height: auto;
+  color: var(--text-secondary);
+  opacity: 0.45;
+}
+
+.peek-check svg {
+  color: #10b981;
+  opacity: 0.6;
+}
+
 .wizard-step-title {
   font-family: 'Nunito', sans-serif;
   font-size: 22px;

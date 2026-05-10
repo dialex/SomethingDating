@@ -142,19 +142,16 @@ function renderSection() {
   if (card) {
     attachSwipe(card);
 
-    // Slide the new card in from the opposite side of the previous swipe.
-    if (pendingEnterDir !== null) {
-      const dir = pendingEnterDir;
-      pendingEnterDir = null;
-      // New card slides in from the opposite side: next from the left, back from the right.
-      const startOffset = dir > 0 ? -window.innerWidth : window.innerWidth;
+    // Cross-fade the new card in over the peek that's still sitting behind.
+    if (pendingFadeIn) {
+      pendingFadeIn = false;
       card.classList.add("is-entering");
-      card.style.transform = `translateX(${startOffset}px)`;
+      card.style.opacity = "0";
+      // Force layout then re-enable transition for the fade-in.
+      void card.offsetHeight;
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          card.classList.remove("is-entering");
-          card.style.transform = "";
-        });
+        card.classList.remove("is-entering");
+        card.style.opacity = "";
       });
     }
   }
@@ -276,7 +273,7 @@ function goHome() {
 // --- Swipe + animated transition ---
 const SWIPE_THRESHOLD = 70;
 const SWIPE_DURATION = 400;
-let pendingEnterDir = null; // direction the new card should slide IN from
+let pendingFadeIn = false;
 
 function animateOutThenNavigate(card, dir) {
   if (!card || card.dataset.leaving) {
@@ -288,11 +285,19 @@ function animateOutThenNavigate(card, dir) {
   const offset = dir > 0 ? window.innerWidth : -window.innerWidth;
   card.style.transform = `translateX(${offset}px)`;
   card.style.opacity = "0";
+
+  // Bring the peek up to full size in parallel so it sits where the active card was.
+  const stack = card.closest(".wizard-stack");
+  if (stack) {
+    const peek = ensurePeek(stack, dir);
+    setPeekProgress(peek, 1);
+  }
+
   let done = false;
   const finish = () => {
     if (done) return;
     done = true;
-    pendingEnterDir = dir;
+    pendingFadeIn = true;
     navigate(dir);
   };
   card.addEventListener("transitionend", finish, { once: true });
@@ -320,7 +325,43 @@ function highlightForDelta(dx) {
   else if (dx < 0) $("btn-prev").classList.add("is-active");
 }
 
+// Peek (skeleton or "going home" indicator) shown behind the active card during drag.
+function ensurePeek(stack, dir) {
+  const section = sections.find(s => s.id === currentSectionId);
+  const isLast = currentStep >= section.steps.length - 1;
+  const isFirst = currentStep === 0;
+
+  let tplId;
+  if (dir > 0 && isLast) tplId = "tpl-peek-check"; // last step → next = complete
+  else if (dir < 0 && isFirst) tplId = "tpl-peek-home"; // first step → back = home
+  else tplId = "tpl-peek-skeleton";
+
+  const existing = stack.querySelector(".peek");
+  if (existing && existing.dataset.tpl === tplId) return existing;
+  if (existing) existing.remove();
+
+  const node = tpl(tplId);
+  const peek = node.querySelector(".peek");
+  peek.dataset.tpl = tplId;
+  stack.appendChild(node);
+  return peek;
+}
+
+function setPeekProgress(peek, progress) {
+  const p = Math.min(Math.max(progress, 0), 1);
+  const scale = 0.92 + (1 - 0.92) * p;
+  const ty = 16 - 16 * p;
+  peek.style.opacity = (p * 0.85).toFixed(3);
+  peek.style.transform = `scale(${scale}) translateY(${ty}px)`;
+}
+
+function clearPeek(stack) {
+  const peek = stack.querySelector(".peek");
+  if (peek) peek.remove();
+}
+
 function attachSwipe(card) {
+  const stack = card.closest(".wizard-stack");
   let startX = 0;
   let startY = 0;
   let dx = 0;
@@ -354,6 +395,12 @@ function attachSwipe(card) {
     dx = ax;
     card.style.transform = `translateX(${dx}px)`;
     highlightForDelta(dx);
+
+    if (stack && dx !== 0) {
+      const dir = dx > 0 ? 1 : -1;
+      const peek = ensurePeek(stack, dir);
+      setPeekProgress(peek, Math.abs(dx) / SWIPE_THRESHOLD);
+    }
   });
 
   const release = () => {
@@ -363,9 +410,12 @@ function attachSwipe(card) {
     clearActiveButtons();
     if (Math.abs(dx) > SWIPE_THRESHOLD) {
       const dir = dx > 0 ? 1 : -1;
+      // Peek will be discarded when the new card renders. Let the existing
+      // slide-out + slide-in animation handle the transition.
       animateOutThenNavigate(card, dir);
     } else {
       card.style.transform = "";
+      if (stack) clearPeek(stack);
     }
     dx = 0;
   };

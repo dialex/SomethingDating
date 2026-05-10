@@ -83,12 +83,42 @@
       </div>
       <div class="wizard-progress" data-slot="progress"></div>
       <div class="wizard-step-badge" data-slot="step-badge"></div>
-      <article class="wizard-step-card">
-        <h2 class="wizard-step-title" data-slot="step-title"></h2>
-        <p class="wizard-step-description" data-slot="step-description" hidden></p>
-        <div data-slot="extra"></div>
-      </article>
+      <div class="wizard-stack" data-slot="stack">
+        <article class="wizard-step-card">
+          <h2 class="wizard-step-title" data-slot="step-title"></h2>
+          <p class="wizard-step-description" data-slot="step-description" hidden></p>
+          <div data-slot="extra"></div>
+        </article>
+      </div>
     </section>
+  </template>
+
+  <template id="tpl-peek-skeleton">
+    <article class="wizard-step-card peek peek-skeleton">
+      <div class="skeleton-line title"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+      <div class="peek-tips">
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line short"></div>
+      </div>
+    </article>
+  </template>
+
+  <template id="tpl-peek-home">
+    <article class="wizard-step-card peek peek-home">
+      <!-- lucide: undo-2 -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+    </article>
+  </template>
+
+  <template id="tpl-peek-check">
+    <article class="wizard-step-card peek peek-home peek-check">
+      <!-- lucide: check -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+    </article>
   </template>
 
   <template id="tpl-wizard-extra">
