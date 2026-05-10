@@ -86,15 +86,6 @@ function renderSection() {
   node.querySelector('[data-slot="phase-title"]').textContent = section.title;
   node.querySelector('[data-slot="phase-subtitle"]').textContent = section.subtitle || "";
 
-  // Segmented progress
-  const progress = node.querySelector('[data-slot="progress"]');
-  steps.forEach((_, i) => {
-    const seg = document.createElement("div");
-    seg.className = "wizard-progress-seg" + (i < stepIdx ? " done" : i === stepIdx ? " current" : "");
-    if (i <= stepIdx) seg.style.background = gradient;
-    progress.appendChild(seg);
-  });
-
   // Step badge
   const badge = node.querySelector('[data-slot="step-badge"]');
   badge.style.background = gradient;
@@ -143,19 +134,6 @@ function renderSection() {
     const stack = card.closest(".wizard-stack");
     if (stack) renderStackPeeks(stack);
     attachSwipe(card);
-
-    // Cross-fade the new card in over the peek that's still sitting behind.
-    if (pendingFadeIn) {
-      pendingFadeIn = false;
-      card.classList.add("is-entering");
-      card.style.opacity = "0";
-      // Force layout then re-enable transition for the fade-in.
-      void card.offsetHeight;
-      requestAnimationFrame(() => {
-        card.classList.remove("is-entering");
-        card.style.opacity = "";
-      });
-    }
   }
 
   // Bottom nav state
@@ -184,6 +162,20 @@ function render() {
     renderCredits();
   } else {
     renderSection();
+  }
+
+  // After step→step swipes only: the previous peek-1 was lifted to <body>.
+  // Fade it out to reveal the freshly rendered card behind.
+  if (pendingLingeringPeek) {
+    const peek = pendingLingeringPeek;
+    pendingLingeringPeek = null;
+    void peek.offsetHeight;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        peek.style.opacity = "0";
+      });
+    });
+    setTimeout(() => peek.remove(), FADE_DURATION + 100);
   }
 }
 
@@ -275,7 +267,16 @@ function goHome() {
 // --- Swipe + animated transition ---
 const SWIPE_THRESHOLD = 70;
 const SWIPE_DURATION = 400;
-let pendingFadeIn = false;
+const FADE_DURATION = 300;
+let pendingLingeringPeek = null;
+
+function isGoingHome(dir) {
+  const section = sections.find(s => s.id === currentSectionId);
+  if (!section || !section.steps) return false;
+  if (dir > 0 && currentStep >= section.steps.length - 1) return true;
+  if (dir < 0 && currentStep === 0) return true;
+  return false;
+}
 
 function animateOutThenNavigate(card, dir) {
   if (!card || card.dataset.leaving) {
@@ -297,15 +298,41 @@ function animateOutThenNavigate(card, dir) {
     setStackProgress(stack, 1);
   }
 
+  // Cross-fade the peek onto the new card — but only when navigating between
+  // steps. Skip for going-home transitions: the peek-check / peek-home can just
+  // be wiped by the normal re-render.
+  const goingHome = isGoingHome(dir);
+
   let done = false;
   const finish = () => {
     if (done) return;
     done = true;
-    pendingFadeIn = true;
+    if (!goingHome) liftPeekToBody(stack);
     navigate(dir);
   };
   card.addEventListener("transitionend", finish, { once: true });
   setTimeout(finish, SWIPE_DURATION + 50);
+}
+
+// Move peek-1 out of the stack into <body> with fixed positioning so it
+// survives the re-render and can cross-fade onto the new card.
+function liftPeekToBody(stack) {
+  if (!stack) return;
+  const peek = stack.querySelector(".peek-1");
+  if (!peek) return;
+  const rect = peek.getBoundingClientRect();
+  peek.style.position = "fixed";
+  peek.style.left = rect.left + "px";
+  peek.style.top = rect.top + "px";
+  peek.style.width = rect.width + "px";
+  peek.style.height = rect.height + "px";
+  peek.style.transform = "none";
+  peek.style.opacity = "1";
+  peek.style.zIndex = "50";
+  peek.style.pointerEvents = "none";
+  peek.style.transition = `opacity ${FADE_DURATION}ms ease`;
+  document.body.appendChild(peek);
+  pendingLingeringPeek = peek;
 }
 
 function navigateAnimated(dir) {

@@ -118,23 +118,6 @@ body.wizard main {
   line-height: 1.4;
 }
 
-.wizard-progress {
-  display: flex;
-  gap: 6px;
-  margin-top: 4px;
-}
-
-.wizard-progress-seg {
-  flex: 1;
-  height: 4px;
-  border-radius: 99px;
-  background: rgba(0,0,0,0.1);
-}
-
-.wizard-progress-seg.current {
-  opacity: 0.55;
-}
-
 .wizard-step-badge {
   align-self: flex-start;
   font-family: 'Nunito', sans-serif;
