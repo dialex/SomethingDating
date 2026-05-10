@@ -137,9 +137,11 @@ function renderSection() {
 
   main.replaceChildren(node);
 
-  // Wire swipe gestures on the rendered card
+  // Wire swipe gestures on the rendered card and seed the queue of peeks.
   const card = main.querySelector(".wizard-step-card");
   if (card) {
+    const stack = card.closest(".wizard-stack");
+    if (stack) renderStackPeeks(stack);
     attachSwipe(card);
 
     // Cross-fade the new card in over the peek that's still sitting behind.
@@ -286,11 +288,13 @@ function animateOutThenNavigate(card, dir) {
   card.style.transform = `translateX(${offset}px)`;
   card.style.opacity = "0";
 
-  // Bring the peek up to full size in parallel so it sits where the active card was.
+  // Advance the queue: peek-1 takes the active position, peek-2 takes peek-1's,
+  // and peek-3 (if applicable) fills in at the back.
   const stack = card.closest(".wizard-stack");
   if (stack) {
-    const peek = ensurePeek(stack, dir);
-    setPeekProgress(peek, 1);
+    ensurePeek(stack, dir);
+    ensurePeekDepth(stack, dir);
+    setStackProgress(stack, 1);
   }
 
   let done = false;
@@ -325,39 +329,106 @@ function highlightForDelta(dx) {
   else if (dx < 0) $("btn-prev").classList.add("is-active");
 }
 
-// Peek (skeleton or "going home" indicator) shown behind the active card during drag.
+// --- Stack of peek cards behind the active card (queue effect) ---
+
+function appendPeek(stack, tplId, layerClass) {
+  const node = tpl(tplId);
+  const peek = node.querySelector(".peek");
+  peek.classList.add(layerClass);
+  peek.dataset.tpl = tplId;
+  stack.appendChild(node);
+  return peek;
+}
+
+function renderStackPeeks(stack) {
+  // Queue depth follows how many steps remain ahead. Capped at 2 peeks behind
+  // the active card so the stack tops out at 3 visible cards.
+  const section = sections.find(s => s.id === currentSectionId);
+  if (!section || !section.steps) return;
+  const remainingForward = section.steps.length - currentStep - 1;
+  if (remainingForward >= 1) appendPeek(stack, "tpl-peek-skeleton", "peek-1");
+  if (remainingForward >= 2) appendPeek(stack, "tpl-peek-skeleton", "peek-2");
+}
+
+// Swap peek-1's template when direction triggers a boundary case (going home).
 function ensurePeek(stack, dir) {
   const section = sections.find(s => s.id === currentSectionId);
   const isLast = currentStep >= section.steps.length - 1;
   const isFirst = currentStep === 0;
 
   let tplId;
-  if (dir > 0 && isLast) tplId = "tpl-peek-check"; // last step → next = complete
-  else if (dir < 0 && isFirst) tplId = "tpl-peek-home"; // first step → back = home
+  if (dir > 0 && isLast) tplId = "tpl-peek-check";
+  else if (dir < 0 && isFirst) tplId = "tpl-peek-home";
   else tplId = "tpl-peek-skeleton";
 
-  const existing = stack.querySelector(".peek");
-  if (existing && existing.dataset.tpl === tplId) return existing;
-  if (existing) existing.remove();
-
-  const node = tpl(tplId);
-  const peek = node.querySelector(".peek");
-  peek.dataset.tpl = tplId;
-  stack.appendChild(node);
-  return peek;
+  const peek1 = stack.querySelector(".peek-1");
+  if (peek1 && peek1.dataset.tpl === tplId) return peek1;
+  if (peek1) peek1.remove();
+  return appendPeek(stack, tplId, "peek-1");
 }
 
-function setPeekProgress(peek, progress) {
+// Decide whether a third peek should join the back of the queue during this drag.
+// True when the destination step would itself still have a 2-peek queue (so the
+// visible card count stays at 3 throughout the transition).
+function shouldExtendQueue(dir) {
+  const section = sections.find(s => s.id === currentSectionId);
+  if (!section || !section.steps) return false;
+  const total = section.steps.length;
+  // Going-home cases land on the home view, no queue.
+  if (dir > 0 && currentStep >= total - 1) return false;
+  if (dir < 0 && currentStep === 0) return false;
+  const newStep = currentStep + dir;
+  const newRemainingForward = total - newStep - 1;
+  return newRemainingForward >= 2;
+}
+
+function ensurePeekDepth(stack, dir) {
+  const peek3 = stack.querySelector(".peek-3");
+  if (shouldExtendQueue(dir)) {
+    if (!peek3) appendPeek(stack, "tpl-peek-skeleton", "peek-3");
+  } else if (peek3) {
+    peek3.remove();
+  }
+}
+
+// Animate the queue forward as the active card is swiped.
+// progress 0 = idle, 1 = each peek slides up one slot.
+function setStackProgress(stack, progress) {
   const p = Math.min(Math.max(progress, 0), 1);
-  const scale = 0.92 + (1 - 0.92) * p;
-  const ty = 16 - 16 * p;
-  peek.style.opacity = (p * 0.85).toFixed(3);
-  peek.style.transform = `scale(${scale}) translateY(${ty}px)`;
+  const peek1 = stack.querySelector(".peek-1");
+  const peek2 = stack.querySelector(".peek-2");
+  const peek3 = stack.querySelector(".peek-3");
+  if (peek1) {
+    const scale = 0.96 + 0.04 * p;
+    const ty = -10 + 10 * p;
+    const op = 0.7 + 0.3 * p;
+    peek1.style.transform = `scale(${scale}) translateY(${ty}px)`;
+    peek1.style.opacity = op.toFixed(3);
+  }
+  if (peek2) {
+    const scale = 0.92 + 0.04 * p;
+    const ty = -22 + 12 * p;
+    const op = 0.4 + 0.3 * p;
+    peek2.style.transform = `scale(${scale}) translateY(${ty}px)`;
+    peek2.style.opacity = op.toFixed(3);
+  }
+  if (peek3) {
+    const scale = 0.88 + 0.04 * p;
+    const ty = -34 + 12 * p;
+    const op = 0 + 0.4 * p;
+    peek3.style.transform = `scale(${scale}) translateY(${ty}px)`;
+    peek3.style.opacity = op.toFixed(3);
+  }
 }
 
-function clearPeek(stack) {
-  const peek = stack.querySelector(".peek");
-  if (peek) peek.remove();
+function resetStackProgress(stack) {
+  for (const sel of [".peek-1", ".peek-2", ".peek-3"]) {
+    const peek = stack.querySelector(sel);
+    if (peek) {
+      peek.style.transform = "";
+      peek.style.opacity = "";
+    }
+  }
 }
 
 function attachSwipe(card) {
@@ -398,8 +469,9 @@ function attachSwipe(card) {
 
     if (stack && dx !== 0) {
       const dir = dx > 0 ? 1 : -1;
-      const peek = ensurePeek(stack, dir);
-      setPeekProgress(peek, Math.abs(dx) / SWIPE_THRESHOLD);
+      ensurePeek(stack, dir);
+      ensurePeekDepth(stack, dir);
+      setStackProgress(stack, Math.abs(dx) / SWIPE_THRESHOLD);
     }
   });
 
@@ -410,12 +482,10 @@ function attachSwipe(card) {
     clearActiveButtons();
     if (Math.abs(dx) > SWIPE_THRESHOLD) {
       const dir = dx > 0 ? 1 : -1;
-      // Peek will be discarded when the new card renders. Let the existing
-      // slide-out + slide-in animation handle the transition.
       animateOutThenNavigate(card, dir);
     } else {
       card.style.transform = "";
-      if (stack) clearPeek(stack);
+      if (stack) resetStackProgress(stack);
     }
     dx = 0;
   };

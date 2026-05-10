@@ -12,5 +12,4 @@
 - [ ] Translations
 
 - Animations on transitions
-- The user can swipe the step card left or right. Swiping to the left is the same as clicking the back button. Swiping to the right is the same as clicking next.
-- Even when the user clicks the bottom buttons, the step card still animates the swipe.
+- When the user enters or leaves a wizard it should animate a circle transition from the center of the screen, that refreshes the entire screen. I think this is an example: https://github.com/swup/demos/tree/main/reveal/
