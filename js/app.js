@@ -5,12 +5,12 @@ let view = "home";
 let currentSectionId = null;
 let currentStep = 0;
 let ignoreHashChange = false;
+let appVersion = "";
 
 const $ = (id) => document.getElementById(id);
 const elFooter      = () => document.querySelector("footer");
 const elWizardNav   = () => $("wizard-nav");
 const elBtnChevron  = () => $("btn-chevron");
-const elFooterMeta  = () => document.querySelector(".footer-meta");
 
 function renderHome() {
   document.body.classList.add("home");
@@ -37,7 +37,10 @@ function renderHome() {
       `).join("")}
     </div>
     <p class="home-footer-msg">Take your time with each phase. Great relationships are built step by step.</p>
-    <p class="home-credits-link"><a href="#credits">Credits</a></p>`;
+    <div class="home-meta">
+      <a href="#credits" class="btn-credits">Credits</a>
+      <div id="app-version">${appVersion ? "v" + appVersion : ""}</div>
+    </div>`;
 
   sections.forEach(s => {
     $(`section-${s.id}`).addEventListener("click", () => enterSection(s.id));
@@ -59,7 +62,6 @@ function renderSection() {
 
   if (!section.steps) {
     elWizardNav().style.display = "none";
-    elFooterMeta().style.display = "";
     main.innerHTML = `
       <div class="wip-card">
         <div class="wip-title">${section.title}</div>
@@ -69,7 +71,6 @@ function renderSection() {
   }
 
   elWizardNav().style.display = "";
-  elFooterMeta().style.display = "";
 
   const steps = section.steps;
   const total = steps.length;
@@ -136,9 +137,7 @@ async function renderCredits() {
   document.body.classList.add("credits");
   $("home-header").style.display = "none";
   elBtnChevron().style.display = "";
-  elFooter().style.display = "";
-  elWizardNav().style.display = "none";
-  elFooterMeta().style.display = "";
+  elFooter().style.display = "none";
 
   const main = $("main-content");
   main.classList.remove("home-view");
@@ -250,7 +249,11 @@ setupInstallBanner();
 fetch("manifest.json")
   .then(r => r.json())
   .then(m => {
-    if (m.version) $("app-version").textContent = "v" + m.version;
+    if (m.version) {
+      appVersion = m.version;
+      const el = $("app-version");
+      if (el) el.textContent = "v" + appVersion;
+    }
   })
   .catch(() => {});
 

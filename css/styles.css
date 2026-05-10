@@ -361,11 +361,8 @@ button:disabled {
   }
 }
 
-/* ── Footer meta (credits + version) ── */
-.footer-meta {
-  max-width: 480px;
-  margin: 0 auto;
-  width: 100%;
+/* ── Home meta (credits + version) ── */
+.home-meta {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -579,21 +576,6 @@ body:not(.home) .install-banner {
   border-radius: var(--radius);
   padding: 14px 16px;
   line-height: 1.5;
-}
-
-.home-credits-link {
-  text-align: center;
-  font-size: 0.8rem;
-  margin-top: -8px;
-}
-
-.home-credits-link a {
-  color: var(--text-secondary);
-  text-decoration: none;
-}
-
-.home-credits-link a:hover {
-  color: var(--primary);
 }
 
 /* ── Section home grid ── */
