@@ -251,8 +251,8 @@ body.wizard main {
 }
 
 .peek-check svg {
-  color: #10b981;
-  opacity: 0.6;
+  color: var(--text-secondary);
+  opacity: 0.45;
 }
 
 .wizard-step-title {
