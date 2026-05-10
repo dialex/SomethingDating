@@ -189,7 +189,7 @@ function hashForState() {
 
 function applyState() {
   render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
   const h = hashForState();
   ignoreHashChange = true;
   location.hash = h;
@@ -221,7 +221,7 @@ function applyHash() {
     }
   }
   render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
 }
 
 window.addEventListener("hashchange", () => {
