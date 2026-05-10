@@ -349,7 +349,7 @@ button:disabled {
 .wizard-btn-prev { color: #ec4899; }
 .wizard-btn-next { color: #10b981; }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .wizard-btn-prev:hover,
   .wizard-btn-next:hover {
     color: var(--surface);
