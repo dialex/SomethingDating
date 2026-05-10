@@ -13,6 +13,10 @@ const elFooter      = () => document.querySelector("footer");
 const elWizardNav   = () => $("wizard-nav");
 const elBtnChevron  = () => $("btn-chevron");
 
+function tpl(id) {
+  return $(id).content.cloneNode(true);
+}
+
 function renderHome() {
   document.body.classList.add("home");
   document.body.classList.remove("wizard", "credits");
@@ -22,31 +26,31 @@ function renderHome() {
 
   const main = $("main-content");
   main.classList.add("home-view");
-  main.innerHTML = `
-    <div class="section-grid">
-      ${sections.map(s => `
-        <div class="section-card" id="section-${s.id}">
-          <div class="section-card-image" style="--c1:${s.color[0]};--c2:${s.color[1]}">
-            ${s.cover ? `<img class="section-card-photo" src="${s.cover}" alt="" />` : ""}
-            <div class="section-card-title">${s.title}</div>
-          </div>
-          <div class="section-card-footer">
-            <span>${s.steps ? s.steps.length + " steps" : "Coming soon"}</span>
-            <span class="section-card-cta">Start <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
-          </div>
-        </div>
-      `).join("")}
-    </div>
-    <p class="home-footer-msg">Take your time with each phase. Great relationships are built step by step.</p>
-    <div class="home-meta">
-      <a href="#credits" class="btn-credits">Credits</a>
-      <div id="app-version">${appVersion ? "v" + appVersion : ""}</div>
-    </div>`;
+
+  const home = tpl("tpl-home");
+  const grid = home.querySelector('[data-slot="grid"]');
+  home.querySelector('[data-slot="version"]').textContent = appVersion ? "v" + appVersion : "";
 
   sections.forEach(s => {
-    $(`section-${s.id}`).addEventListener("click", () => enterSection(s.id));
+    const node = tpl("tpl-section-card");
+    const card = node.querySelector('[data-slot="card"]');
+    card.id = `section-${s.id}`;
+    const image = node.querySelector('[data-slot="image"]');
+    image.style.setProperty("--c1", s.color[0]);
+    image.style.setProperty("--c2", s.color[1]);
+    const photo = node.querySelector('[data-slot="photo"]');
+    if (s.cover) {
+      photo.src = s.cover;
+      photo.hidden = false;
+    }
+    node.querySelector('[data-slot="title"]').textContent = s.title;
+    node.querySelector('[data-slot="steps"]').textContent =
+      s.steps ? `${s.steps.length} steps` : "Coming soon";
+    card.addEventListener("click", () => enterSection(s.id));
+    grid.appendChild(node);
   });
 
+  main.replaceChildren(home);
   main.appendChild($("install-banner"));
 }
 
@@ -63,11 +67,9 @@ function renderSection() {
 
   if (!section.steps) {
     elWizardNav().style.display = "none";
-    main.innerHTML = `
-      <div class="wip-card">
-        <div class="wip-title">${section.title}</div>
-        <p class="wip-sub">This section is still being written. Check back soon.</p>
-      </div>`;
+    const wip = tpl("tpl-wip");
+    wip.querySelector('[data-slot="title"]').textContent = section.title;
+    main.replaceChildren(wip);
     return;
   }
 
@@ -78,53 +80,62 @@ function renderSection() {
   const stepIdx = Math.min(Math.max(currentStep, 0), total - 1);
   const step = steps[stepIdx];
   const isLast = stepIdx === total - 1;
-
   const gradient = `linear-gradient(90deg, ${section.color[0]}, ${section.color[1]})`;
 
-  // Segmented progress
-  const segments = steps.map((_, i) => {
-    const cls = i < stepIdx ? "done" : i === stepIdx ? "current" : "";
-    const style = (i <= stepIdx) ? `style="background:${gradient}"` : "";
-    return `<div class="wizard-progress-seg ${cls}" ${style}></div>`;
-  }).join("");
+  const node = tpl("tpl-wizard-step");
+  node.querySelector('[data-slot="phase-title"]').textContent = section.title;
+  node.querySelector('[data-slot="phase-subtitle"]').textContent = section.subtitle || "";
 
-  // Extra block (optional)
-  let extraHtml = "";
-  if (step.extra) {
-    const desc = step.extra.description;
-    let body = "";
-    if (Array.isArray(desc)) {
-      body = `<ul class="wizard-extra-list">${desc.map(d => `<li>${d}</li>`).join("")}</ul>`;
-    } else if (desc) {
-      body = `<p class="wizard-extra-text">${desc}</p>`;
-    }
-    extraHtml = `
-      <aside class="wizard-extra">
-        <div class="wizard-extra-header">
-          <div class="wizard-extra-icon" aria-hidden="true">
-            <!-- lucide: lightbulb -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-          </div>
-          <h3 class="wizard-extra-title">${step.extra.title}</h3>
-        </div>
-        ${body}
-      </aside>`;
+  // Segmented progress
+  const progress = node.querySelector('[data-slot="progress"]');
+  steps.forEach((_, i) => {
+    const seg = document.createElement("div");
+    seg.className = "wizard-progress-seg" + (i < stepIdx ? " done" : i === stepIdx ? " current" : "");
+    if (i <= stepIdx) seg.style.background = gradient;
+    progress.appendChild(seg);
+  });
+
+  // Step badge
+  const badge = node.querySelector('[data-slot="step-badge"]');
+  badge.style.background = gradient;
+  badge.textContent = `Step ${stepIdx + 1} of ${total}`;
+
+  // Step title + description
+  node.querySelector('[data-slot="step-title"]').textContent = step.title;
+  const desc = node.querySelector('[data-slot="step-description"]');
+  if (step.description) {
+    desc.textContent = step.description;
+    desc.hidden = false;
   }
 
-  main.innerHTML = `
-    <section class="wizard">
-      <div class="wizard-phase-header">
-        <h1 class="wizard-phase-title">${section.title}</h1>
-        <p class="wizard-phase-subtitle">${section.subtitle || ""}</p>
-      </div>
-      <div class="wizard-progress">${segments}</div>
-      <div class="wizard-step-badge" style="background:${gradient}">Step ${stepIdx + 1} of ${total}</div>
-      <article class="wizard-step-card">
-        <h2 class="wizard-step-title">${step.title}</h2>
-        ${step.description ? `<p class="wizard-step-description">${step.description}</p>` : ""}
-        ${extraHtml}
-      </article>
-    </section>`;
+  // Extra block (optional)
+  const extraSlot = node.querySelector('[data-slot="extra"]');
+  if (step.extra) {
+    const extra = tpl("tpl-wizard-extra");
+    extra.querySelector('[data-slot="title"]').textContent = step.extra.title;
+    const body = extra.querySelector('[data-slot="body"]');
+    const extraDesc = step.extra.description;
+    if (Array.isArray(extraDesc)) {
+      const ul = document.createElement("ul");
+      ul.className = "wizard-extra-list";
+      extraDesc.forEach(d => {
+        const li = document.createElement("li");
+        li.textContent = d;
+        ul.appendChild(li);
+      });
+      body.appendChild(ul);
+    } else if (extraDesc) {
+      const p = document.createElement("p");
+      p.className = "wizard-extra-text";
+      p.textContent = extraDesc;
+      body.appendChild(p);
+    }
+    extraSlot.replaceWith(extra);
+  } else {
+    extraSlot.remove();
+  }
+
+  main.replaceChildren(node);
 
   // Bottom nav state
   $("btn-next-icon-heart").style.display = isLast ? "none" : "";

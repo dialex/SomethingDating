@@ -52,6 +52,65 @@
 
   <main id="main-content"></main>
 
+  <!-- View templates (cloned and populated by js/app.js) -->
+  <template id="tpl-home">
+    <div class="section-grid" data-slot="grid"></div>
+    <p class="home-footer-msg">Take your time with each phase. Great relationships are built step by step.</p>
+    <div class="home-meta">
+      <a href="#credits" class="btn-credits">Credits</a>
+      <div id="app-version" data-slot="version"></div>
+    </div>
+  </template>
+
+  <template id="tpl-section-card">
+    <div class="section-card" data-slot="card">
+      <div class="section-card-image" data-slot="image">
+        <img class="section-card-photo" data-slot="photo" alt="" hidden />
+        <div class="section-card-title" data-slot="title"></div>
+      </div>
+      <div class="section-card-footer">
+        <span data-slot="steps"></span>
+        <span class="section-card-cta">Start <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-wizard-step">
+    <section class="wizard">
+      <div class="wizard-phase-header">
+        <h1 class="wizard-phase-title" data-slot="phase-title"></h1>
+        <p class="wizard-phase-subtitle" data-slot="phase-subtitle"></p>
+      </div>
+      <div class="wizard-progress" data-slot="progress"></div>
+      <div class="wizard-step-badge" data-slot="step-badge"></div>
+      <article class="wizard-step-card">
+        <h2 class="wizard-step-title" data-slot="step-title"></h2>
+        <p class="wizard-step-description" data-slot="step-description" hidden></p>
+        <div data-slot="extra"></div>
+      </article>
+    </section>
+  </template>
+
+  <template id="tpl-wizard-extra">
+    <aside class="wizard-extra">
+      <div class="wizard-extra-header">
+        <div class="wizard-extra-icon" aria-hidden="true">
+          <!-- lucide: lightbulb -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+        </div>
+        <h3 class="wizard-extra-title" data-slot="title"></h3>
+      </div>
+      <div data-slot="body"></div>
+    </aside>
+  </template>
+
+  <template id="tpl-wip">
+    <div class="wip-card">
+      <div class="wip-title" data-slot="title"></div>
+      <p class="wip-sub">This section is still being written. Check back soon.</p>
+    </div>
+  </template>
+
   <footer>
     <div class="wizard-nav" id="wizard-nav">
       <button class="wizard-btn-restart" id="btn-restart" aria-label="Restart">
