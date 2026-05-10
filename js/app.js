@@ -278,7 +278,16 @@ if ("serviceWorker" in navigator) {
 applyHash();
 
 // Fit the home title to its container so it never overflows on narrow viewports.
-const titleLine = document.querySelector(".title-line-top");
-const titleWord = document.querySelector(".title-word-dating");
-if (titleLine) fitText(titleLine, { maxFontSize: 137 });
-if (titleWord) fitText(titleWord, { maxFontSize: 280 });
+// Wait for fonts to load first — measuring with the fallback font gives wrong widths.
+function fitTitles() {
+  const titleLine = document.querySelector(".title-line-top");
+  const titleWord = document.querySelector(".title-word-dating");
+  if (titleLine) fitText(titleLine, { maxFontSize: 137 });
+  if (titleWord) fitText(titleWord, { maxFontSize: 280 });
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(fitTitles);
+} else {
+  fitTitles();
+}
