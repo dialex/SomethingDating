@@ -10,8 +10,14 @@ test.describe("Button navigation", () => {
     await expect(page.locator("#btn-next")).toBeEnabled();
   });
 
-  test("previous button is hidden on the first step", async ({ page }) => {
-    await expect(page.locator("#btn-prev")).toBeHidden();
+  test("previous button is visible on the first step", async ({ page }) => {
+    await expect(page.locator("#btn-prev")).toBeVisible();
+  });
+
+  test("previous button on first step returns to home", async ({ page }) => {
+    await page.locator("#btn-prev").click();
+    await page.locator(".section-grid").waitFor();
+    await expect(page).toHaveURL(/\/#?$|\/$/);
   });
 
   test("clicking next goes to the next step", async ({ page }) => {
@@ -19,9 +25,11 @@ test.describe("Button navigation", () => {
     await expect(page.locator(".wizard-step-badge")).toContainText("Step 2");
   });
 
-  test("previous becomes visible after first step", async ({ page }) => {
+  test("previous goes back a step after first step", async ({ page }) => {
     await page.locator("#btn-next").click();
-    await expect(page.locator("#btn-prev")).toBeVisible();
+    await expect(page.locator(".wizard-step-badge")).toContainText("Step 2");
+    await page.locator("#btn-prev").click();
+    await expect(page.locator(".wizard-step-badge")).toContainText("Step 1");
   });
 
   test("restart button returns to home from any step", async ({ page }) => {

@@ -127,8 +127,6 @@ function renderSection() {
     </section>`;
 
   // Bottom nav state
-  const btnPrev = $("btn-prev");
-  btnPrev.style.visibility = stepIdx === 0 ? "hidden" : "visible";
   $("btn-next-icon-heart").style.display = isLast ? "none" : "";
   $("btn-next-icon-check").style.display = isLast ? "" : "none";
 }
@@ -227,9 +225,11 @@ export function navigate(dir) {
     goHome();
     return;
   }
-  const next = currentStep + dir;
-  if (next < 0) return;
-  currentStep = next;
+  if (dir === -1 && currentStep === 0) {
+    goHome();
+    return;
+  }
+  currentStep += dir;
   applyState();
 }
 
