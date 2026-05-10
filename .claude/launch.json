@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dating-guide",
+      "name": "something-dating",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "."],
       "port": 3000,

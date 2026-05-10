@@ -1,6 +1,6 @@
-A PWA based on Adam Something's dating guide. Step-by-step mobile workflow navigator, installable on Android and iOS.
+# Something Dating
 
-Live at: https://dialex.github.io/DatingGuide/
+A PWA based on Adam Something's dating guide. Step-by-step mobile workflow navigator, installable on Android and iOS.
 
 ## Setup
 
@@ -20,7 +20,7 @@ Start a local server (required for service workers to work):
 npm run dev
 ```
 
-Then open http://localhost:3000/DatingGuide/ in your browser.
+Then open http://localhost:3000/SomethingDating/ in your browser.
 
 > Use `localhost`, not `file://` — service workers require either `localhost` or HTTPS.
 

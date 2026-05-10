@@ -1,5 +1,5 @@
 {
-  "name": "dating-guide",
+  "name": "something-dating",
   "private": true,
   "scripts": {
     "dev": "browser-sync start --server --port 3000 --files '**/*.html,**/*.js,**/*.css' --no-notify",
@@ -8,7 +8,7 @@
     "test:ui": "playwright test --ui",
     "skills:install": "npx skills install",
     "skills:update": "npx skills update",
-    "audit": "npx lighthouse http://localhost:3000/DatingGuide/ --view",
+    "audit": "npx lighthouse http://localhost:3000/SomethingDating/ --view",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {

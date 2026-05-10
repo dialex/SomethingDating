@@ -72,4 +72,4 @@ No npm package is used — there is no bundler in this project, so we hand-copy 
 
 ## Deployment
 
-Pushes to `main` auto-deploy to `https://dialex.github.io/DatingGuide/` via GitHub Actions. The service worker uses `/DatingGuide/` as the path prefix for all cached assets.
+Pushes to `main` auto-deploy to `https://dialex.github.io/SomethingDating/` via GitHub Actions. The service worker uses `/SomethingDating/` as the path prefix for all cached assets.

@@ -20,7 +20,7 @@ node -e "
 node -e "
   const fs = require('fs');
   let sw = fs.readFileSync('service-worker.js', 'utf8');
-  sw = sw.replace(/const CACHE_NAME = \"dating-guide-v[^\"]+\"/, 'const CACHE_NAME = \"dating-guide-v$NEW_VERSION\"');
+  sw = sw.replace(/const CACHE_NAME = \"something-dating-v[^\"]+\"/, 'const CACHE_NAME = \"something-dating-v$NEW_VERSION\"');
   fs.writeFileSync('service-worker.js', sw);
 "
 
