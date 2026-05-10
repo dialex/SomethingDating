@@ -1,4 +1,4 @@
-const CACHE_NAME = "something-dating-v1.2.47";
+const CACHE_NAME = "something-dating-v1.2.48";
 const ASSETS = [
   "/SomethingDating/",
   "/SomethingDating/index.html",
@@ -6,6 +6,7 @@ const ASSETS = [
   "/SomethingDating/js/app.js",
   "/SomethingDating/js/workflow.js",
   "/SomethingDating/js/install.js",
+  "/SomethingDating/js/fittext.js",
   "/SomethingDating/html/credits.html",
   "/SomethingDating/html/install-ios.html",
   "/SomethingDating/html/install-android.html",
